@@ -26,7 +26,8 @@
     "redux-persist": "^5.9.1",
     "redux-thunk": "^2.2.0",
     "rn-fetch-blob": "^0.10.15",
-    "tcomb-form-native": "^0.6.20"
+    "tcomb-form-native": "^0.6.20",
+    "url-parse": ">=1.4.3"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
