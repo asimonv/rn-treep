@@ -23,6 +23,7 @@ const options = {
     email: {
       error: 'You forgot your UC email',
       help: 'Please use your UC email',
+      autoCapitalize: 'none',
     },
     password: {
       error: 'Please add your password',

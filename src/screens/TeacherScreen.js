@@ -10,13 +10,14 @@ import {
 import { connect } from 'react-redux';
 import { withInAppNotification } from 'react-native-in-app-notification';
 
-
 import HeaderCard from '../components/HeaderCard';
 import HeaderView from '../components/HeaderView';
 import StatModal from '../components/StatModal';
 import StatsView from '../components/StatsView';
 import Layout from '../constants/Layout';
 
+import { fetchTeachersStats } from '../actions/teacherActions';
+import { votesOptions } from '../data/teacherOptions';
 const TAB_BAR_HEIGHT = 49;
 const screen = Dimensions.get('window');
 
@@ -39,37 +40,19 @@ export class TeacherScreen extends React.Component {
 
     this.state = {
       selectedStat: undefined,
-      data: [
-            {
-                label: '1',
-                layout:'column',
-                color: 'blue',
-            },
-            {
-                label: '2',
-                layout:'column',
-                color: 'blue',
-            },
-            {
-                label: '3',
-                color: 'blue',
-                layout:'column',
-            },
-            {
-                label: '4',
-                layout:'column',
-                color: 'blue',
-            },
-            {
-                label: '5',
-                layout:'column',
-                color: 'blue',
-            },
-        ],
+      data: votesOptions,
     }
 
     this._onPress = this._onPress.bind(this);
     this._onButtonPressed = this._onButtonPressed.bind(this);
+  }
+
+  componentDidMount() {
+    const { id } = this.props.teacher.selectedTeacher;
+    const { currentUser } = this.props.auth.user;
+    this.props.dispatch(
+      fetchTeachersStats(id, currentUser),
+    );
   }
 
   _onPress(stat) {
@@ -99,10 +82,13 @@ export class TeacherScreen extends React.Component {
               title={this.props.teacher.selectedTeacher.name}
             />
         <HeaderView title={'Stats'}/>
-        <StatsView
-          onPress={this._onPress}
-          {...this.props.teacher.selectedTeacher}
-        />
+        {this.props.teacher.fetchingStats ?
+          <Text>Loading...</Text> :
+          <StatsView
+            onPress={this._onPress}
+            stats={this.props.teacher.stats}
+          />
+        }
         </ScrollView>
         <StatModal
           imageURL={this.props.teacher.selectedTeacher.url}
@@ -120,6 +106,7 @@ export class TeacherScreen extends React.Component {
 
 const mapStateToProps = state => ({
   teacher: state.teacher,
+  auth: state.auth,
 });
 
 export default withInAppNotification(connect(mapStateToProps)(TeacherScreen));

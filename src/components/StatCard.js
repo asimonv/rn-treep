@@ -19,6 +19,7 @@ export default function StatCard(props) {
     default:
       colors = ['#03C9A9', '#01AF95'];
   }
+  console.log(props.stat);
   return (
     <TouchableOpacity onPress={() => props.onPress(props.stat)}>
       <LinearGradient colors={colors} style={[props.style, styles.container]}>

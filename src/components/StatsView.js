@@ -16,8 +16,8 @@ export default class StatsView extends React.Component {
   render() {
     return (
       <View>
-        {Object.entries(this.props.stats).map(([key,value])=>{
-          const stat = { title: key, value };
+        {Object.entries(this.props.stats).map(([key, value])=>{
+          const stat = { title: key, ...value};
           return (
             <StatCard
               cardType={key == 'popularity' ? cardType.DEFAULT : cardType.PRIMARY }
