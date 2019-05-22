@@ -1,35 +1,39 @@
-import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-} from 'react-native';
+import React from "react";
+import { StyleSheet, Text } from "react-native";
+import styled from "styled-components/native";
 
-import Layout from '../constants/Layout';
-import Colors from '../constants/Colors';
+import Layout from "../constants/Layout";
+import { colors } from "../styles/common.style";
 
-export default function Button(props){
+const ButtonContainer = styled.TouchableOpacity`
+  background-color: ${props => {
+    if (props.primary) {
+      return colors.buttons.blue;
+    } else if (props.danger) {
+      return colors.buttons.red;
+    }
+    return colors.buttons.blue;
+  }};
+`;
+
+export default function Button(props) {
   return (
-    <TouchableOpacity
-      style={styles.container}
-      onPress={props.onPress}
-    >
+    <ButtonContainer {...props} style={[styles.container, props.style]}>
       <Text style={styles.text}>{props.title}</Text>
-    </TouchableOpacity>
+    </ButtonContainer>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-    backgroundColor: Colors.buttons.blue,
-    borderRadius: Layout.container.borderRadius,
-    width: Layout.window.width / 2,
+    flex: 1,
+    borderRadius: Layout.container.borderRadius
   },
   text: {
-    color: 'white',
-    textAlign: 'center',
-    fontWeight: '600',
-    textTransform: 'capitalize',
-  },
+    color: "white",
+    textAlign: "center",
+    fontWeight: "600",
+    textTransform: "capitalize"
+  }
 });

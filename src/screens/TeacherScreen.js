@@ -1,39 +1,32 @@
-import React from 'react';
+import React from "react";
 import {
   Alert,
-  Dimensions,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
-  View,
-} from 'react-native';
-import { connect } from 'react-redux';
-import { withInAppNotification } from 'react-native-in-app-notification';
+  View
+} from "react-native";
 
-import HeaderCard from '../components/HeaderCard';
-import HeaderView from '../components/HeaderView';
-import StatModal from '../components/StatModal';
-import StatsView from '../components/StatsView';
-import Layout from '../constants/Layout';
+import AnimatedEllipsis from "react-native-animated-ellipsis";
+import { connect } from "react-redux";
+import { withInAppNotification } from "react-native-in-app-notification";
 
-import { fetchTeachersStats } from '../actions/teacherActions';
-import { votesOptions } from '../data/teacherOptions';
-const TAB_BAR_HEIGHT = 49;
-const screen = Dimensions.get('window');
+import HeaderCard from "../components/HeaderCard";
+import HeaderView from "../components/HeaderView";
+import StatModal from "../components/StatModal";
+import StatsView from "../components/StatsView";
+import Layout from "../constants/Layout";
 
+import { fetchTeachersStats } from "../actions/teacherActions";
+import { sendStat } from "../actions/userActions";
+import { votesOptions } from "../data/teacherOptions";
+import checkIfVoted from "../helpers/votes";
 
 export class TeacherScreen extends React.Component {
   static navigationOptions = {
-    title: 'Teacher',
+    title: "Teacher"
   };
-
-  renderContent = () => {
-    return (
-      <View>
-        <Text>Get directions to your location</Text>
-      </View>
-    );
-  }
 
   constructor(props) {
     super(props);
@@ -41,64 +34,111 @@ export class TeacherScreen extends React.Component {
     this.state = {
       selectedStat: undefined,
       data: votesOptions,
-    }
+      interactedBefore: false
+    };
 
     this._onPress = this._onPress.bind(this);
+    this._onRefresh = this._onRefresh.bind(this);
     this._onButtonPressed = this._onButtonPressed.bind(this);
   }
 
   componentDidMount() {
-    const { id } = this.props.teacher.selectedTeacher;
-    const { currentUser } = this.props.auth.user;
-    this.props.dispatch(
-      fetchTeachersStats(id, currentUser),
-    );
+    const {
+      teacher: {
+        selectedTeacher: { id }
+      },
+      dispatch
+    } = this.props;
+    dispatch(fetchTeachersStats({ teacherId: id }));
   }
 
   _onPress(stat) {
-    console.log(stat);
-    this.setState({
-      selectedStat: stat,
-    }, () => {
-      this.refs.modal.openModal()
-    });
+    const {
+      teacher: { selectedTeacher },
+      votes
+    } = this.props;
+    const { id } = selectedTeacher;
+    const {
+      meta: { repr }
+    } = stat;
+    const data = { teacherId: id, voteType: repr };
+    this.setState(
+      {
+        selectedStat: stat,
+        interactedBefore: checkIfVoted(data, votes)
+      },
+      () => {
+        this.refs.modal.openModal();
+      }
+    );
   }
 
-  _onButtonPressed() {
+  _onRefresh() {
+    const {
+      teacher: { selectedTeacher },
+      showNotification
+    } = this.props;
+    const { id } = selectedTeacher;
+    this.props.dispatch(fetchTeachersStats({ teacherId: id }));
+  }
+
+  _onButtonPressed(stat) {
+    const {
+      teacher: {
+        selectedTeacher: { id }
+      },
+      showNotification
+    } = this.props;
+    const data = { ...stat, teacherId: id };
+    this.props.dispatch(sendStat(data));
+
     this.refs.modal.closeModal();
-    this.props.showNotification({
-      title: 'Thank you!',
-      message: 'Your opinion is very important to others',
-      onPress: () => Alert.alert('Alert', 'You clicked the notification!')
+    showNotification({
+      title: "Thank you!",
+      message: "Your opinion is very important to others",
+      onPress: () => Alert.alert("Alert", "You clicked the notification!")
     });
   }
 
   render() {
+    const { teacher } = this.props;
+    const { data, selectedStat, interactedBefore } = this.state;
     return (
-      <View style={{flex:1}}>
-        <ScrollView style={styles.container}>
-            <HeaderCard
-              imageURL={this.props.teacher.selectedTeacher.url}
-              title={this.props.teacher.selectedTeacher.name}
+      <View style={{ flex: 1 }}>
+        <ScrollView
+          style={styles.container}
+          refreshControl={
+            <RefreshControl
+              refreshing={teacher.fetchingStats}
+              onRefresh={this._onRefresh}
             />
-        <HeaderView title={'Stats'}/>
-        {this.props.teacher.fetchingStats ?
-          <Text>Loading...</Text> :
-          <StatsView
-            onPress={this._onPress}
-            stats={this.props.teacher.stats}
+          }
+        >
+          <HeaderCard
+            url={teacher.selectedTeacher.url}
+            title={teacher.selectedTeacher.name}
           />
-        }
+          <HeaderView title={"Stats"} />
+          {teacher.fetchingStats ? (
+            <Text>
+              Loading <AnimatedEllipsis />
+            </Text>
+          ) : (
+            <StatsView onPress={this._onPress} stats={teacher.stats} />
+          )}
         </ScrollView>
-        <StatModal
-          imageURL={this.props.teacher.selectedTeacher.url}
-          title={this.props.teacher.selectedTeacher.name}
-          headerType={'vertical'}
-          data={this.state.data}
-          stat={this.state.selectedStat}
-          ref={'modal'}
-          onButtonPressed={this._onButtonPressed}
-        />
+        {selectedStat && (
+          <StatModal
+            url={teacher.selectedTeacher.url}
+            title={teacher.selectedTeacher.name}
+            headerType={"vertical"}
+            data={data}
+            stat={selectedStat}
+            ref={"modal"}
+            interactedBefore={interactedBefore}
+            onButtonPressed={this._onButtonPressed}
+          />
+        )}
       </View>
     );
   }
@@ -106,7 +146,7 @@ export class TeacherScreen extends React.Component {
 
 const mapStateToProps = state => ({
   teacher: state.teacher,
-  auth: state.auth,
+  votes: state.user.votes
 });
 
 export default withInAppNotification(connect(mapStateToProps)(TeacherScreen));
@@ -114,6 +154,6 @@ export default withInAppNotification(connect(mapStateToProps)(TeacherScreen));
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: Layout.container.margin,
+    margin: Layout.container.margin
   }
 });

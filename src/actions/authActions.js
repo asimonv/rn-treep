@@ -1,34 +1,38 @@
-import authService from '../services/auth';
-import { authConstants } from '../constants';
+import authService from "../services/auth";
+import { authConstants } from "../constants";
 
-const requestAuth = (data) => ({
+const request = (constant, data) => ({
   type: authConstants.AUTH_REQUEST,
-  data,
+  data
 });
 
-const receiveResponse = (data, res) => ({
+const success = (constant, data, res) => ({
   type: authConstants.AUTH_REQUEST_FULLFILED,
   payload: res,
-  data,
+  data
 });
 
-const rejectResponse = data => ({
+const reject = (constant, data) => ({
   type: authConstants.AUTH_REQUEST_REJECTED,
-  payload: data.error,
-  data,
+  payload: data
 });
 
-export const signIn = (data) => {
-  return function (dispatch) {
-    dispatch(requestAuth(data));
-    authService.signIn(data)
+export const signIn = data => {
+  return function(dispatch) {
+    dispatch(request(authConstants.AUTH_REQUEST, data));
+    authService
+      .signIn(data)
       .then(user => {
-        dispatch(receiveResponse(data, user));
+        dispatch(success(authConstants.AUTH_REQUEST_FULLFILED, data, user));
       })
       .catch(error => {
-        dispatch(rejectResponse(data));
+        dispatch(reject(authConstants.AUTH_REQUEST_REJECTED, error));
       });
   };
+};
+
+export const logoutUser = () => dispatch => {
+  dispatch(request(authConstants.USER_LOGOUT));
 };
 
 export default { signIn };

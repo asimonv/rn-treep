@@ -1,31 +1,34 @@
-import { teacherConstants } from '../constants';
-import teacherService from '../services/teacher';
+import { teacherConstants } from "../constants";
+import teacherService from "../services/teacher";
 
-export const teacherSet = (teacher) => ({
+export const teacherSet = teacher => ({
   type: teacherConstants.TEACHER_SET,
-  payload: teacher,
+  payload: teacher
 });
 
-const requestStats = (teacherId, userId) => ({
+const requestStats = ({ teacherId }) => ({
   type: teacherConstants.TEACHER_STATS_REQUEST,
-  teacherId,
-  userId,
+  teacherId
 });
 
-const receiveStats = (teacherId, userId, res) => ({
+const receiveStats = (data, res) => ({
   type: teacherConstants.TEACHER_STATS_FULLFILED,
-  payload: res,
+  payload: res
 });
 
-const rejectResponse = res => ({
+const rejectResponse = e => ({
   type: teacherConstants.TEACHER_STATS_REJECTED,
-  payload: data.error,
+  payload: e
 });
 
-export const fetchTeachersStats = (teacherId, userId) => async (dispatch) => {
-  dispatch(requestStats(teacherId, userId));
-  const res = await teacherService.getStats(teacherId, userId);
-  dispatch(receiveStats(teacherId, userId, res));
+export const fetchTeachersStats = data => async dispatch => {
+  dispatch(requestStats(data));
+  try {
+    const res = await teacherService.getStats(data);
+    dispatch(receiveStats(data, res));
+  } catch (e) {
+    dispatch(rejectResponse(e));
+  }
 };
 
 export default { teacherSet, fetchTeachersStats };

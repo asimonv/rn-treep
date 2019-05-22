@@ -1,10 +1,12 @@
-import { authConstants } from '../constants';
+import { authConstants } from "../constants";
 
-export default function reducer(state = {
+const initialState = {
   user: undefined,
   loadingUser: false,
-  error: null,
-}, action) {
+  error: null
+};
+
+export default function reducer(state = initialState, action) {
   switch (action.type) {
     case authConstants.AUTH_REQUEST: {
       return { ...state, loadingUser: true };
@@ -16,6 +18,10 @@ export default function reducer(state = {
 
     case authConstants.AUTH_REQUEST_FULLFILED: {
       return { ...state, loadingUser: false, user: action.payload };
+    }
+
+    case authConstants.USER_LOGOUT: {
+      return { ...initialState };
     }
 
     default:

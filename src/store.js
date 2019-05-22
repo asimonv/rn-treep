@@ -1,24 +1,22 @@
-import { createStore, applyMiddleware, compose } from 'redux';
-import reducers from './reducers';
-import thunk from 'redux-thunk';
-import { createLogger } from 'redux-logger';
-import { persistStore, persistReducer, REHYDRATE, PERSIST } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
-import createActionBuffer from 'redux-action-buffer';
-
+import { createStore, applyMiddleware } from "redux";
+import reducers from "./reducers";
+import thunk from "redux-thunk";
+import { createLogger } from "redux-logger";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
 const middleware = applyMiddleware(thunk, createLogger());
 
 const persistConfig = {
-  key: 'root',
+  key: "root",
   storage,
-  whitelist: ['message'],
-  debug: true,
+  whitelist: ["auth"],
+  debug: true
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);
 let store = createStore(persistedReducer, middleware);
 let persistor = persistStore(store);
 
-//persistor.purge();
+//  persistor.purge();
 
 export default { store, persistor };

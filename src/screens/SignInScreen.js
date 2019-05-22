@@ -1,92 +1,85 @@
-import React from 'react';
-import {
-  AsyncStorage,
-  Button,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import React from "react";
+import { AsyncStorage, StyleSheet, Text, View } from "react-native";
 
-import { connect } from 'react-redux';
-import { signIn } from '../actions/authActions';
+import AnimatedEllipsis from "react-native-animated-ellipsis";
+import { connect } from "react-redux";
+import { signIn } from "../actions/authActions";
+import Button from "../components/Button";
 
-import t from 'tcomb-form-native';
+import t from "tcomb-form-native";
 const Form = t.form.Form;
 
 const User = t.struct({
   email: t.String,
-  password: t.String,
+  password: t.String
 });
 
 const options = {
   fields: {
     email: {
-      error: 'You forgot your UC email',
-      help: 'Please use your UC email',
-      autoCapitalize: 'none',
+      error: "You forgot your UC email",
+      help: "Please use your UC email",
+      autoCapitalize: "none"
     },
     password: {
-      error: 'Please add your password',
-      help: 'Your UC Login password. Do not worry, Treep does not save it',
+      error: "Please add your password",
+      help: "Your UC Login password. Do not worry, Treep does not save it",
       secureTextEntry: true,
-      password: true,
-    },
-  },
+      password: true
+    }
+  }
 };
 
 export class SignInScreen extends React.Component {
   static navigationOptions = {
-    title: 'Please sign in',
+    title: "Please sign in"
   };
-
-  constructor(props) {
-    super(props);
-    this.state = { signingIn: false };
-  }
 
   render() {
     return (
       <View style={styles.container}>
         <Form
           type={User}
-          ref={c => this._form = c} // assign a ref
+          ref={c => (this._form = c)} // assign a ref
           options={options}
         />
-        <Button disabled={this.state.signingIn} title="Sign in!" onPress={this._signInAsync} />
-        { this.state.signIn &&
-          <Text>Signing you in...</Text>
-        }
+        <Button
+          disabled={this.props.auth.loadingUser}
+          title="Sign in!"
+          onPress={this._signInAsync}
+        />
+        {this.props.auth.loadingUser && (
+          <Text>
+            Signing you in <AnimatedEllipsis />
+          </Text>
+        )}
+        {this.props.auth.error && <Text>error</Text>}
       </View>
     );
   }
 
   _signInAsync = () => {
-    //await AsyncStorage.setItem('userToken', 'abc');
-    //this.props.navigation.navigate('App');
     const value = this._form.getValue(); // use that ref to get the form value
-
-    this.props.dispatch(
-      signIn(value),
-    );
-
-    this.setState({ signIn: true });
+    this.props.dispatch(signIn({ ...value }));
   };
 
-  componentDidMount() {
-    console.log(this.props);
-  }
-
-  async componentWillReceiveProps(nextProps) {
-    if (nextProps.auth.user) {
-      const userToken = await AsyncStorage.setItem('userToken', nextProps.auth.user.currentUser);
-      this.props.navigation.navigate('App');
+  async componentDidUpdate(prevProps) {
+    const {
+      auth: { user },
+      navigation: { navigate }
+    } = this.props;
+    const {
+      auth: { user: oldUser }
+    } = prevProps;
+    if (oldUser !== user) {
+      const userToken = await AsyncStorage.setItem("user", user);
+      navigate("App");
     }
   }
-
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth,
+  auth: state.auth
 });
 
 export default connect(mapStateToProps)(SignInScreen);
@@ -94,6 +87,6 @@ export default connect(mapStateToProps)(SignInScreen);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-  },
+    padding: 20
+  }
 });

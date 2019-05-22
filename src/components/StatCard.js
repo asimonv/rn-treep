@@ -19,13 +19,20 @@ export default function StatCard(props) {
     default:
       colors = ['#03C9A9', '#01AF95'];
   }
-  console.log(props.stat);
+  const votesMessage = props.stat.votes === '1' ? 'vote' : 'votes';
   return (
     <TouchableOpacity onPress={() => props.onPress(props.stat)}>
       <LinearGradient colors={colors} style={[props.style, styles.container]}>
-        <Text style={styles.statTitle}>{_.capitalize(props.stat.title)}</Text>
-        <Text style={styles.statValue}>{props.stat.value}</Text>
-        {props.stat.voted && <Text>voted</Text>}
+        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
+          <View style={{flexDirection: 'column'}}>
+            <Text style={styles.statTitle}>{_.capitalize(props.stat.title)}</Text>
+            {props.stat.voted !== "0" && <Text style={styles.subtitle}>Voted</Text>}
+          </View>
+          <View style={{flexDirection: 'column'}}>
+            <Text style={styles.statValue}>{props.stat.value}</Text>
+            <Text style={{...styles.subtitle, textAlign: 'right'}}>{props.stat.votes} {votesMessage}</Text>
+          </View>
+        </View>
       </LinearGradient>
     </TouchableOpacity>
   );
@@ -45,10 +52,15 @@ const styles = StyleSheet.create({
   statTitle: {
     color: 'white',
     fontSize: 16,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   statValue: {
     color: 'white',
     fontSize: 40,
-  }
+    textAlign: 'right',
+  },
+  subtitle: {
+    color: 'white',
+    fontWeight: '600',
+  },
 });

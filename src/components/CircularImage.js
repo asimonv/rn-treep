@@ -1,29 +1,26 @@
-import React from 'react';
-import {
-  StyleSheet,
-  View,
-} from 'react-native';
+import React from "react";
+import { StyleSheet, View } from "react-native";
 
-import { CachedImage } from 'react-native-cached-image';
+import { CachedImage } from "react-native-cached-image";
 
 export default function CircularImage(props) {
-  const size = props.headerType == 'vertical' ? 60 : 30;
+  const size = props.headerType == "vertical" ? 60 : 30;
   const styles = StyleSheet.create({
     image: {
       width: size,
-      height: size,
+      height: size
     },
     imageContainer: {
-      overflow: 'hidden',
+      overflow: "hidden",
       width: size,
       height: size,
-      borderRadius: size/2,
+      borderRadius: size / 2,
       marginRight: 5,
       borderWidth: 2,
-      borderColor: 'lightgray',
-    },
+      borderColor: "lightgray"
+    }
   });
-  
+
   return (
     <View style={styles.imageContainer}>
       <CachedImage
@@ -33,4 +30,4 @@ export default function CircularImage(props) {
       />
     </View>
   );
-};
+}
