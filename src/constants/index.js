@@ -1,4 +1,4 @@
-export { default as authConstants } from "./auth";
-export { default as courseConstants } from "./course";
-export { default as teacherConstants } from "./teacher";
-export { default as userConstants } from "./user";
+export authConstants from "./auth";
+export courseConstants from "./course";
+export teacherConstants from "./teacher";
+export userConstants from "./user";

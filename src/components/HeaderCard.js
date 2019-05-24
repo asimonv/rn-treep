@@ -26,8 +26,8 @@ const _renderRevealedFooter = handlePress => {
 export default function HeaderCard(props) {
   const styles = StyleSheet.create({
     container: {
-      marginTop: 10,
-      marginBottom: 10
+      display: "flex",
+      marginVertical: 10
     },
     topContainer: {
       flexDirection: props.headerType == "vertical" ? "column" : "row",
@@ -35,15 +35,16 @@ export default function HeaderCard(props) {
     },
     title: {
       fontWeight: "600",
+      marginTop: 5,
       fontSize: props.headerType == "vertical" ? 17 : 15
     }
   });
 
   return (
-    <View style={styles.container}>
+    <View style={{ ...styles.container, ...props.containerStyle }}>
       <View style={styles.topContainer}>
         {props.url && <AsyncImage {...props} />}
-        {props.headerType !== "vertical" && (
+        {(props.headerType !== "vertical" || props.showTitle) && (
           <Text style={styles.title}>{props.title}</Text>
         )}
       </View>

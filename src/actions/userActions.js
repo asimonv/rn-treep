@@ -27,7 +27,7 @@ export const getUserVotes = () => async dispatch => {
 };
 
 export const sendStat = data => async dispatch => {
-  const { action, ...withoutAction } = data;
+  const { action } = data;
   dispatch(
     request(
       action === "vote"
@@ -37,7 +37,7 @@ export const sendStat = data => async dispatch => {
     )
   );
   try {
-    const res = await userService.sendStat(withoutAction);
+    const res = await userService.sendStat(data);
     dispatch(
       success(
         res,

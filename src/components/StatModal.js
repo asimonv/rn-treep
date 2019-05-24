@@ -5,7 +5,6 @@ import Modal from "react-native-modalbox";
 import RadioGroup from "react-native-radio-buttons-group";
 
 import Button from "./Button";
-import HeaderCard from "./HeaderCard";
 import Layout from "../constants/Layout";
 
 export default class HeaderView extends Component {
@@ -36,7 +35,6 @@ export default class HeaderView extends Component {
         ref={"modal"}
       >
         <View>
-          <HeaderCard {...this.props} />
           {stat && (
             <Text style={styles.infoText}>
               What do you think about the{" "}
@@ -51,9 +49,10 @@ export default class HeaderView extends Component {
           onPress={this.onPress}
         />
         <View style={styles.buttonsContainer}>
-          {interactedBefore && (
+          {interactedBefore ? (
             <Button
               danger
+              large
               style={{ marginHorizontal: 5 }}
               title={"Remove Vote"}
               onPress={() =>
@@ -63,22 +62,24 @@ export default class HeaderView extends Component {
                 })
               }
             />
+          ) : (
+            <Button
+              primary
+              large
+              style={{ marginHorizontal: 5 }}
+              onPress={() =>
+                onButtonPressed({
+                  voteType: parseInt(stat.meta.repr, 10),
+                  value: parseInt(
+                    this.state.data.filter(d => d.selected)[0].value,
+                    10
+                  ),
+                  action: "vote"
+                })
+              }
+              title={"Vote"}
+            />
           )}
-          <Button
-            primary
-            style={{ marginHorizontal: 5 }}
-            onPress={() =>
-              onButtonPressed({
-                voteType: parseInt(stat.meta.repr, 10),
-                value: parseInt(
-                  this.state.data.filter(d => d.selected)[0].value,
-                  10
-                ),
-                action: "vote"
-              })
-            }
-            title={"Vote"}
-          />
         </View>
       </Modal>
     );
@@ -97,6 +98,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     color: "gray",
     textAlign: "center",
+    fontSize: 17,
     maxWidth: Layout.window.width / 1.5
   },
   buttonsContainer: {

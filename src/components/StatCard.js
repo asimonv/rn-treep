@@ -1,36 +1,51 @@
-import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import _ from 'lodash';
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import _ from "lodash";
 
-import LinearGradient from 'react-native-linear-gradient';
-import { cardType } from '../constants/enums';
+import LinearGradient from "react-native-linear-gradient";
+import { cardType } from "../constants/enums";
 
 export default function StatCard(props) {
   var colors;
-  switch (props.cardType) {
+  const { stat, onPress, style, cardType: type } = props;
+  switch (type) {
     case cardType.PRIMARY:
-      colors = ['#37A6FA', '#0058E6'];
+      colors = ["#37A6FA", "#0058E6"];
       break;
     default:
-      colors = ['#03C9A9', '#01AF95'];
+      colors = ["#03C9A9", "#01AF95"];
   }
-  const votesMessage = props.stat.votes === '1' ? 'vote' : 'votes';
+  const votesMessage = stat.votes === 1 ? "vote" : "votes";
   return (
-    <TouchableOpacity onPress={() => props.onPress(props.stat)}>
-      <LinearGradient colors={colors} style={[props.style, styles.container]}>
-        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
-          <View style={{flexDirection: 'column'}}>
-            <Text style={styles.statTitle}>{_.capitalize(props.stat.title)}</Text>
-            {props.stat.voted !== "0" && <Text style={styles.subtitle}>Voted</Text>}
+    <TouchableOpacity onPress={() => onPress(stat)}>
+      <LinearGradient colors={colors} style={[style, styles.container]}>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-between"
+          }}
+        >
+          <View style={{ flexDirection: "column" }}>
+            <Text style={styles.statTitle}>{_.capitalize(stat.title)}</Text>
+            {stat.voted && (
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignSelf: "flex-start",
+                  ...styles.label,
+                  marginTop: 3
+                }}
+              >
+                <Text style={styles.subtitle}>{`${stat.voted.value}`}</Text>
+              </View>
+            )}
           </View>
-          <View style={{flexDirection: 'column'}}>
-            <Text style={styles.statValue}>{props.stat.value}</Text>
-            <Text style={{...styles.subtitle, textAlign: 'right'}}>{props.stat.votes} {votesMessage}</Text>
+          <View style={{ flexDirection: "column" }}>
+            <Text style={styles.statValue}>{stat.value}</Text>
+            <Text style={{ ...styles.subtitle, textAlign: "right" }}>
+              {stat.votes} {votesMessage}
+            </Text>
           </View>
         </View>
       </LinearGradient>
@@ -41,26 +56,32 @@ export default function StatCard(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'blue',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    backgroundColor: "blue",
+    flexDirection: "row",
+    justifyContent: "space-between",
     padding: 10,
     maxHeight: 80,
-    alignItems: 'center',
-    borderRadius: 5,
+    alignItems: "center",
+    borderRadius: 5
   },
   statTitle: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold"
   },
   statValue: {
-    color: 'white',
+    color: "white",
     fontSize: 40,
-    textAlign: 'right',
+    textAlign: "right"
   },
   subtitle: {
-    color: 'white',
-    fontWeight: '600',
+    color: "white",
+    fontWeight: "600"
   },
+  label: {
+    paddingHorizontal: 5,
+    paddingVertical: 2.5,
+    backgroundColor: "rgba(52, 52, 52, 0.2)",
+    borderRadius: 5
+  }
 });

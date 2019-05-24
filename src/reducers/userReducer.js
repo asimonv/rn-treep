@@ -1,14 +1,13 @@
 import { userConstants } from "../constants";
 
-export default function reducer(
-  state = {
-    votes: undefined,
-    fetchingVotes: false,
-    errorFetchingVotes: false,
-    errorSendingStat: false
-  },
-  action
-) {
+const initialState = {
+  votes: undefined,
+  fetchingVotes: false,
+  errorFetchingVotes: false,
+  errorSendingStat: false
+};
+
+export default function reducer(state = initialState, action) {
   switch (action.type) {
     case userConstants.USER_GET_VOTES: {
       return { ...state, fetchingVotes: true };
@@ -27,7 +26,13 @@ export default function reducer(
       return { ...state, sendingStat: true };
     }
     case userConstants.USER_SEND_STAT_FULFILLED: {
-      return { ...state, sendingStat: false };
+      const prevVotes = state.votes;
+      const { payload: item } = action;
+      const found = prevVotes.find(x => x.id === item.id);
+      const votes = found
+        ? prevVotes.map(x => (x.id === item.id ? item : x))
+        : [...prevVotes, item];
+      return { ...state, sendingStat: false, votes };
     }
     case userConstants.USER_SEND_STAT_REJECTED: {
       return { ...state, sendingStat: false, errorSendingStat: action.payload };
@@ -36,11 +41,13 @@ export default function reducer(
       return { ...state, removingStat: true };
     }
     case userConstants.USER_REMOVE_STAT_FULFILLED: {
-      const prevVotes = this.state.votes;
+      const prevVotes = state.votes;
       const { payload } = action;
       const newVotes = prevVotes.filter(
         v =>
-          v.voteType !== payload.voteType && v.teacherId !== payload.teacherId
+          !(
+            v.voteType === payload.voteType && v.teacherId === payload.teacherId
+          )
       );
       return { ...state, removingStat: false, votes: newVotes };
     }

@@ -1,9 +1,9 @@
-const tintColor = "#2f95dc";
+const tintColor = "rgb(0, 122, 255)";
 
 export const colors = {
   black: "#1a1917",
   gray: "#888888",
-  lightgray: "#ececec",
+  lightgray: "rgb(232, 236, 241)",
   primaryBackground: "#B721FF",
   secondaryBackground: "#21D4FD",
   system: "#007AFF",
@@ -21,15 +21,21 @@ export const colors = {
   noticeBackground: tintColor,
   noticeText: "#fff",
   moreInfo: "gray",
+  light: "rgb(228, 241, 254)",
+  text: {
+    light: tintColor
+  },
   buttons: {
-    blue: "#007AFF",
-    red: "#FF3B30",
+    blue: tintColor,
+    red: "rgb(217, 30, 24)",
     orange: "#FF9500",
     yellow: "#FFCC00",
     green: "#4CD964",
     purple: "#5856D6",
     pink: "#FF2D55",
-    tealblue: "#5AC8FA"
+    tealblue: "#5AC8FA",
+    aliceBlue: "#E4F1FE",
+    light: "rgb(244, 246, 249)"
   }
 };
 

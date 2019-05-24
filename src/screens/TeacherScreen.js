@@ -13,13 +13,14 @@ import { connect } from "react-redux";
 import { withInAppNotification } from "react-native-in-app-notification";
 
 import HeaderCard from "../components/HeaderCard";
-import HeaderView from "../components/HeaderView";
 import StatModal from "../components/StatModal";
 import StatsView from "../components/StatsView";
+import Button from "../components/Button";
 import Layout from "../constants/Layout";
 
 import { fetchTeachersStats } from "../actions/teacherActions";
 import { sendStat } from "../actions/userActions";
+import { teacherSendStat } from "../actions/teacherActions";
 import { votesOptions } from "../data/teacherOptions";
 import checkIfVoted from "../helpers/votes";
 
@@ -40,6 +41,7 @@ export class TeacherScreen extends React.Component {
     this._onPress = this._onPress.bind(this);
     this._onRefresh = this._onRefresh.bind(this);
     this._onButtonPressed = this._onButtonPressed.bind(this);
+    this._onPressComments = this._onPressComments.bind(this);
   }
 
   componentDidMount() {
@@ -76,10 +78,11 @@ export class TeacherScreen extends React.Component {
   _onRefresh() {
     const {
       teacher: { selectedTeacher },
-      showNotification
+      showNotification,
+      dispatch
     } = this.props;
     const { id } = selectedTeacher;
-    this.props.dispatch(fetchTeachersStats({ teacherId: id }));
+    dispatch(fetchTeachersStats({ teacherId: id }));
   }
 
   _onButtonPressed(stat) {
@@ -87,21 +90,30 @@ export class TeacherScreen extends React.Component {
       teacher: {
         selectedTeacher: { id }
       },
-      showNotification
+      showNotification,
+      dispatch
     } = this.props;
     const data = { ...stat, teacherId: id };
-    this.props.dispatch(sendStat(data));
-
+    dispatch(sendStat(data));
+    dispatch(teacherSendStat(data));
     this.refs.modal.closeModal();
-    showNotification({
+    /*showNotification({
       title: "Thank you!",
       message: "Your opinion is very important to others",
       onPress: () => Alert.alert("Alert", "You clicked the notification!")
     });
+    */
+  }
+
+  _onPressComments() {
+    const {
+      navigation: { navigate }
+    } = this.props;
+    navigate("Comments");
   }
 
   render() {
-    const { teacher } = this.props;
+    const { teacher, votes } = this.props;
     const { data, selectedStat, interactedBefore } = this.state;
     return (
       <View style={{ flex: 1 }}>
@@ -117,15 +129,39 @@ export class TeacherScreen extends React.Component {
           <HeaderCard
             url={teacher.selectedTeacher.url}
             title={teacher.selectedTeacher.name}
+            showTitle
+            containerStyle={{
+              marginHorizontal: Layout.container.margin,
+              marginVertical: Layout.container.margin * 2
+            }}
+            headerType="vertical"
           />
-          <HeaderView title={"Stats"} />
           {teacher.fetchingStats ? (
-            <Text>
+            <Text style={{ marginHorizontal: Layout.container.margin }}>
               Loading <AnimatedEllipsis />
             </Text>
           ) : (
-            <StatsView onPress={this._onPress} stats={teacher.stats} />
+            <StatsView
+              onPress={this._onPress}
+              stats={teacher.stats}
+              votes={votes}
+              parent={teacher.selectedTeacher}
+              style={{ marginHorizontal: Layout.container.margin }}
+            />
           )}
+          <View
+            style={{
+              marginHorizontal: Layout.container.margin,
+              marginVertical: Layout.container.margin * 2
+            }}
+          >
+            <Button
+              onPress={this._onPressComments}
+              light
+              large
+              title="Write a comment"
+            />
+          </View>
         </ScrollView>
         {selectedStat && (
           <StatModal
@@ -153,7 +189,6 @@ export default withInAppNotification(connect(mapStateToProps)(TeacherScreen));
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    margin: Layout.container.margin
+    flex: 1
   }
 });

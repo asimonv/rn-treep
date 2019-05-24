@@ -6,29 +6,49 @@ export const teacherSet = teacher => ({
   payload: teacher
 });
 
-const requestStats = ({ teacherId }) => ({
-  type: teacherConstants.TEACHER_STATS_REQUEST,
+const request = ({ teacherId }, constant) => ({
+  type: constant,
   teacherId
 });
 
-const receiveStats = (data, res) => ({
-  type: teacherConstants.TEACHER_STATS_FULLFILED,
+const success = (res, constant) => ({
+  type: constant,
   payload: res
 });
 
-const rejectResponse = e => ({
-  type: teacherConstants.TEACHER_STATS_REJECTED,
+const reject = (e, constant) => ({
+  type: constant,
   payload: e
 });
 
 export const fetchTeachersStats = data => async dispatch => {
-  dispatch(requestStats(data));
+  dispatch(request(data, teacherConstants.TEACHER_STATS_REQUEST));
   try {
     const res = await teacherService.getStats(data);
-    dispatch(receiveStats(data, res));
+    dispatch(success(res, teacherConstants.TEACHER_STATS_FULLFILED));
   } catch (e) {
-    dispatch(rejectResponse(e));
+    dispatch(reject(e, teacherConstants.TEACHER_STATS_REJECTED));
   }
 };
 
-export default { teacherSet, fetchTeachersStats };
+export const fetchTeacherComments = data => async dispatch => {
+  dispatch(request(data, teacherConstants.TEACHER_GET_COMMENTS));
+  try {
+    const res = await teacherService.getComments(data);
+    dispatch(success(res, teacherConstants.TEACHER_GET_COMMENTS_FULFILLED));
+  } catch (e) {
+    dispatch(reject(e, teacherConstants.TEACHER_GET_COMMENTS_REJECTED));
+  }
+};
+
+export const teacherSendStat = data => async dispatch => {
+  const { action } = data;
+  dispatch(
+    success(
+      data,
+      action === "vote"
+        ? teacherConstants.TEACHER_POST_STAT
+        : teacherConstants.TEACHER_REMOVE_STAT
+    )
+  );
+};
