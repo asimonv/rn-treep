@@ -1,29 +1,31 @@
 import React from "react";
-import {
-  Alert,
-  AsyncStorage,
-  FlatList,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View
-} from "react-native";
+import { FlatList, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { connect } from "react-redux";
 import AnimatedEllipsis from "react-native-animated-ellipsis";
+import { KeyboardAccessoryView } from "react-native-keyboard-accessory";
 
 import ListItem from "../components/ListItem";
-import { fetchTeacherComments } from "../actions/teacherActions";
+import StickyKeyboardAccessory from "../components/StickyKeyboardAccessory";
+import Message from "../components/Message";
+import { fetchTeacherComments, postComment } from "../actions/teacherActions";
 import { colors } from "../styles/common.style";
-import Layout from "../constants/Layout";
+import Layout from "../styles/Layout";
+
+const timelessMessage =
+  "This messages are timeless and anonymous, so please be kind. Also, don't expect a reply :-)";
 
 class CommentsScreen extends React.Component {
   static navigationOptions = {
     title: "Comments"
   };
 
-  _keyExtractor = item => item.key;
+  _keyExtractor = item => `${item.id}`;
 
-  _renderItem = ({ item }) => <ListItem onPress={this._onPress} item={item} />;
+  _renderItem = ({ item }) => {
+    const { text, userId } = item;
+    const comment = { description: text, title: userId };
+    return <ListItem onPress={this._onPress} item={comment} />;
+  };
 
   _renderSeparator = () => (
     <View
@@ -49,23 +51,44 @@ class CommentsScreen extends React.Component {
     console.log(item);
   };
 
+  _onPressSend = text => {
+    const {
+      dispatch,
+      teacher: {
+        selectedTeacher: { id }
+      }
+    } = this.props;
+    dispatch(postComment({ teacherId: id, text }));
+  };
+
   render() {
     const { teacher } = this.props;
     return (
-      <SafeAreaView>
+      <SafeAreaView style={styles.container}>
         {teacher.fetchingComments ? (
           <Text style={styles.header}>
             Getting comments <AnimatedEllipsis />
           </Text>
         ) : (
-          <FlatList
-            style={styles.container}
-            data={teacher.comments}
-            keyExtractor={this._keyExtractor}
-            renderItem={this._renderItem}
-            ItemSeparatorComponent={this._renderSeparator}
-          />
+          <View style={styles.container}>
+            <Message title={timelessMessage} />
+            <FlatList
+              style={styles.container}
+              data={teacher.comments}
+              keyExtractor={this._keyExtractor}
+              renderItem={this._renderItem}
+              ItemSeparatorComponent={this._renderSeparator}
+            />
+          </View>
         )}
+        <KeyboardAccessoryView
+          inSafeAreaView
+          alwaysVisible
+          hideBorder
+          style={{ backgroundColor: "white", margin: Layout.container.margin }}
+        >
+          <StickyKeyboardAccessory onPressSend={this._onPressSend} />
+        </KeyboardAccessoryView>
       </SafeAreaView>
     );
   }

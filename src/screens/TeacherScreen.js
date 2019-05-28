@@ -16,7 +16,7 @@ import HeaderCard from "../components/HeaderCard";
 import StatModal from "../components/StatModal";
 import StatsView from "../components/StatsView";
 import Button from "../components/Button";
-import Layout from "../constants/Layout";
+import Layout from "../styles/Layout";
 
 import { fetchTeachersStats } from "../actions/teacherActions";
 import { sendStat } from "../actions/userActions";

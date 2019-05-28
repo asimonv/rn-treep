@@ -5,7 +5,7 @@ import Modal from "react-native-modalbox";
 import RadioGroup from "react-native-radio-buttons-group";
 
 import Button from "./Button";
-import Layout from "../constants/Layout";
+import Layout from "../styles/Layout";
 
 export default class HeaderView extends Component {
   constructor(props) {

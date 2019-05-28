@@ -28,7 +28,7 @@ export default function ListItem(props) {
           </View>
         )}
         <View style={{ flex: 1, flexDirection: "column" }}>
-          <Text style={styles.title}>{item.key}</Text>
+          <Text style={styles.title}>{item.title}</Text>
           {item.description && (
             <Text style={styles.subtitle}>{item.description}</Text>
           )}

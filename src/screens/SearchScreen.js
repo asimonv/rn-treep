@@ -15,7 +15,7 @@ import HeaderView from "../components/HeaderView";
 import searchService from "../services/search";
 import { courseSet } from "../actions/courseActions";
 import { teacherSet } from "../actions/teacherActions";
-import Layout from "../constants/Layout";
+import Layout from "../styles/Layout";
 
 const EmptyComponent = ({ title }) => (
   <View style={styles.emptyContainer}>
@@ -118,7 +118,9 @@ export class SearchScreen extends React.Component {
           ListEmptyComponent={
             <EmptyComponent
               title={
-                this.state.query.trim() === "" ? "type something" : "no results"
+                this.state.query.trim() === ""
+                  ? ""
+                  : "No results. Try searching for something else."
               }
             />
           }

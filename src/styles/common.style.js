@@ -9,7 +9,7 @@ export const colors = {
   system: "#007AFF",
   alert: "#d91e18",
   warning: "#36d7b7",
-  white: "#eeeeee",
+  white: "rgb(256, 256, 256)",
   tintColor,
   tabIconDefault: "#ccc",
   tabIconSelected: tintColor,

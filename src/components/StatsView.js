@@ -15,7 +15,8 @@ export default class StatsView extends React.Component {
       <View style={[style]}>
         {Object.entries(stats).map(([key, value]) => {
           const voted = votes.find(
-            x => x.voteType === value.meta.repr && parent.id === x.teacherId
+            x =>
+              x.voteType === value.meta.repr && parent.id === x.info.foreign_key
           );
           const stat = { title: key, ...value, voted };
           return (

@@ -3,6 +3,10 @@ package com.treeprn;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.dylanvann.fastimage.FastImageViewPackage;
+import com.reactnativecommunity.netinfo.NetInfoPackage;
+import com.RNFetchBlob.RNFetchBlobPackage;
+import com.cmcewen.blurview.BlurViewPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
@@ -27,6 +31,10 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new FastImageViewPackage(),
+            new NetInfoPackage(),
+            new RNFetchBlobPackage(),
+            new BlurViewPackage(),
             new RNFetchBlobPackage(),
             new VectorIconsPackage(),
             new LinearGradientPackage(),

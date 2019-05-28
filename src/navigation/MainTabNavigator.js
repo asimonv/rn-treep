@@ -4,6 +4,7 @@ import {
   createStackNavigator,
   createBottomTabNavigator
 } from "react-navigation";
+import { FluidNavigator } from "react-navigation-fluid-transitions";
 
 import TabBarIcon from "../components/TabBarIcon";
 import HomeScreen from "../screens/HomeScreen";
@@ -12,9 +13,11 @@ import SettingsScreen from "../screens/SettingsScreen";
 import CourseScreen from "../screens/CourseScreen";
 import TeacherScreen from "../screens/TeacherScreen";
 import CommentsScreen from "../screens/CommentsScreen";
+import StatScreen from "../screens/StatScreen";
 
-const HomeStack = createStackNavigator({
-  Home: HomeScreen
+const HomeStack = FluidNavigator({
+  Home: { screen: HomeScreen },
+  StatScreen: { screen: StatScreen }
 });
 
 HomeStack.navigationOptions = {

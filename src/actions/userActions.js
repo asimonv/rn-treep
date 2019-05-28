@@ -1,4 +1,4 @@
-import { userConstants } from "../constants";
+import { userConstants, teacherConstants } from "../constants";
 import userService from "../services/user";
 
 const request = (constant, payload) => ({

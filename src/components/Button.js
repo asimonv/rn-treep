@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import styled from "styled-components/native";
 
-import Layout from "../constants/Layout";
+import Layout from "../styles/Layout";
 import { colors } from "../styles/common.style";
 
 const ButtonContainer = styled.TouchableOpacity`
@@ -44,10 +44,10 @@ const StyledText = styled.Text`
 `;
 
 export default function Button(props) {
-  const { style, title } = props;
+  const { style, title, ...noStyle } = props;
   return (
-    <ButtonContainer {...props} style={[styles.container, style]}>
-      <StyledText {...props}>{title}</StyledText>
+    <ButtonContainer {...noStyle} style={[styles.container, style]}>
+      <StyledText {...noStyle}>{title}</StyledText>
     </ButtonContainer>
   );
 }

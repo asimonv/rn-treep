@@ -21,6 +21,16 @@ const reject = (e, constant) => ({
   payload: e
 });
 
+export const postComment = data => async dispatch => {
+  dispatch(request(data, teacherConstants.TEACHER_POST_COMMENT));
+  try {
+    const res = await teacherService.postComment(data);
+    dispatch(success(res, teacherConstants.TEACHER_POST_COMMENT_FULFILLED));
+  } catch (e) {
+    dispatch(reject(e, teacherConstants.TEACHER_POST_COMMENT_REJECTED));
+  }
+};
+
 export const fetchTeachersStats = data => async dispatch => {
   dispatch(request(data, teacherConstants.TEACHER_STATS_REQUEST));
   try {

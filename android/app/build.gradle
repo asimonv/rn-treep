@@ -137,6 +137,10 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-fast-image')
+    compile project(':@react-native-community_netinfo')
+    compile project(':react-native-fetch-blob')
+    compile project(':@react-native-community_blur')
     compile project(':rn-fetch-blob')
     compile project(':react-native-vector-icons')
     compile project(':react-native-linear-gradient')

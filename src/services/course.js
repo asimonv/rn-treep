@@ -6,7 +6,7 @@ export default {
   async getComments(data) {
     const header = await authHeader();
     return jsonRequest(
-      `http://localhost:3000/api/teachers/${data.teacherId}/comments/`,
+      `http://localhost:3000/api/courses/${data.courseId}/comments/`,
       {
         headers: { "Content-Type": "application/json", ...header }
       }
@@ -15,7 +15,7 @@ export default {
   async postComment(data) {
     const header = await authHeader();
     return jsonRequest(
-      `http://localhost:3000/api/teachers/${data.teacherId}/comments/`,
+      `http://localhost:3000/api/courses/${data.courseId}/comments/`,
       {
         body: JSON.stringify(data),
         method: "PUT",
@@ -29,7 +29,7 @@ export default {
   async getStats(data) {
     const header = await authHeader();
     return jsonRequest(
-      `http://localhost:3000/api/teachers/${data.teacherId}/stats/`,
+      `http://localhost:3000/api/courses/${data.courseId}/stats/`,
       {
         headers: { "Content-Type": "application/json", ...header }
       }
