@@ -1,5 +1,12 @@
 import React from "react";
-import { Alert, AsyncStorage, FlatList, StyleSheet, View } from "react-native";
+import {
+  Alert,
+  AsyncStorage,
+  FlatList,
+  Linking,
+  StyleSheet,
+  View
+} from "react-native";
 import { connect } from "react-redux";
 import ListItem from "../components/ListItem";
 import settingsOptions from "../data/settingsOptions";
@@ -60,10 +67,13 @@ class SettingsScreen extends React.Component {
   _onPress = (e, item) => {
     const { item: selectedItem } = item;
     switch (selectedItem.id) {
-      case 0:
+      case 0: //  votes
         break;
-      case 1:
+      case 1: //  logout
         this._showAlert();
+        break;
+      case 2: //  about
+        Linking.openURL("https://google.com");
         break;
       default:
         break;

@@ -1,11 +1,44 @@
 import React from "react";
-import { SafeAreaView, FlatList, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+  TouchableWithoutFeedback
+} from "react-native";
+import { SafeAreaView } from "react-navigation";
+import styled from "styled-components";
 import { connect } from "react-redux";
 import AnimatedEllipsis from "react-native-animated-ellipsis";
+import { BlurView } from "@react-native-community/blur";
 import { getUserVotes } from "../actions/userActions";
 import statsService from "../services/stats";
 import Layout from "../styles/Layout";
+import { BORDER_RADIUS } from "../styles/common.style";
 import Card from "../components/Card";
+import { Transition } from "react-navigation-fluid-transitions";
+import FastImage from "react-native-fast-image";
+
+import AsyncImage from "../components/AsyncImage";
+
+const BorderedView = styled.View`
+  border-radius: ${props => {
+    if (props.flat) {
+      return 0;
+    }
+    return BORDER_RADIUS * 3;
+  }};
+  overflow: hidden;
+`;
+
+const ShadowView = styled.View`
+  box-shadow: ${props => {
+    if (props.flat) {
+      return "none";
+    }
+    return "0px 1px 3px rgba(0,0,0,0.2)";
+  }};
+`;
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -36,10 +69,88 @@ class HomeScreen extends React.Component {
   }
 
   _renderItem({ item }) {
+    const { title, subtitle, image } = item;
     return (
-      <View style={{ margin: Layout.container.margin * 2.5 }}>
-        <Card onPress={this._onPressStat} item={item} />
-      </View>
+      <TouchableWithoutFeedback onPress={() => this._onPressStat(item)}>
+        <View
+          style={{
+            margin: 20,
+            height: 450
+          }}
+        >
+          <Transition shared="circle">
+            <View
+              style={{
+                flex: 1,
+                borderRadius: 30,
+                shadowColor: "#000",
+                shadowOffset: {
+                  width: 0,
+                  height: 1
+                },
+                shadowOpacity: 0.1,
+                shadowRadius: 1.84,
+
+                elevation: 1
+              }}
+            >
+              <View
+                style={{
+                  position: "absolute",
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  zIndex: 1001,
+                  borderTopLeftRadius: 30,
+                  borderTopRightRadius: 30
+                }}
+              >
+                <BlurView
+                  blurType="light"
+                  blurAmount={50}
+                  style={{
+                    position: "absolute",
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    top: 0
+                  }}
+                />
+                <Text
+                  style={{
+                    paddingHorizontal: 20,
+                    paddingTop: 20,
+                    fontWeight: "700",
+                    fontSize: 14,
+                    zIndex: 1,
+                    color: "gray",
+                    textTransform: "uppercase"
+                  }}
+                >
+                  {title}
+                </Text>
+                <Text
+                  style={{
+                    paddingHorizontal: 20,
+                    paddingBottom: 20,
+                    fontWeight: "700",
+                    fontSize: 22
+                  }}
+                >
+                  {subtitle}
+                </Text>
+              </View>
+              {image && (
+                <AsyncImage
+                  style={styles.image}
+                  url={image}
+                  resizeMode={FastImage.resizeMode.cover}
+                />
+              )}
+            </View>
+          </Transition>
+        </View>
+      </TouchableWithoutFeedback>
     );
   }
 
@@ -55,18 +166,7 @@ class HomeScreen extends React.Component {
     const { stats } = this.state;
     return (
       <SafeAreaView style={styles.container}>
-        {this.state.fetchingStats ? (
-          <Text style={{ marginHorizontal: Layout.container.margin }}>
-            Loading <AnimatedEllipsis />
-          </Text>
-        ) : (
-          <FlatList
-            style={styles.container}
-            data={stats}
-            renderItem={this._renderItem}
-            keyExtractor={this._keyExtractor}
-          />
-        )}
+        <FlatList data={stats} renderItem={this._renderItem} />
       </SafeAreaView>
     );
   }
@@ -74,11 +174,9 @@ class HomeScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#f7f7f7",
-    display: "flex",
-    flexDirection: "column"
-  }
+    flex: 1
+  },
+  image: { flex: 1 }
 });
 
 const mapStateToProps = state => ({

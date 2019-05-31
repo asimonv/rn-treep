@@ -56,7 +56,7 @@ class AsyncImage extends React.Component {
     const { style, url, headerType, resizeMode } = this.props;
     const containerStyle = headerType
       ? StyleSheet.flatten([style, styles.container, image, imageContainer])
-      : { ...style };
+      : { ...styles.container, ...style };
     return (
       <View style={containerStyle}>
         <FastImage
@@ -65,7 +65,7 @@ class AsyncImage extends React.Component {
             uri: url,
             priority: FastImage.priority.normal
           }}
-          resizeMode={FastImage.resizeMode.cover}
+          resizeMode={resizeMode}
         />
       </View>
     );
