@@ -73,7 +73,7 @@ class SettingsScreen extends React.Component {
         this._showAlert();
         break;
       case 2: //  about
-        Linking.openURL("https://google.com");
+        Linking.openURL("https://asimonv.github.io/rn-treep/");
         break;
       default:
         break;
