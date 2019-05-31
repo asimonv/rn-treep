@@ -69,7 +69,7 @@ class HomeScreen extends React.Component {
   }
 
   _renderItem({ item }) {
-    const { title, subtitle, image } = item;
+    const { title, subtitle, image, id } = item;
     return (
       <TouchableWithoutFeedback onPress={() => this._onPressStat(item)}>
         <View
@@ -78,20 +78,11 @@ class HomeScreen extends React.Component {
             height: 450
           }}
         >
-          <Transition shared="circle">
+          <Transition shared={`circle-${id}`}>
             <View
               style={{
                 flex: 1,
-                borderRadius: 30,
-                shadowColor: "#000",
-                shadowOffset: {
-                  width: 0,
-                  height: 1
-                },
-                shadowOpacity: 0.1,
-                shadowRadius: 1.84,
-
-                elevation: 1
+                borderRadius: 30
               }}
             >
               <View
@@ -154,7 +145,7 @@ class HomeScreen extends React.Component {
     );
   }
 
-  _keyExtractor = item => item.id;
+  _keyExtractor = (item, index) => `${index}`;
 
   async componentDidMount() {
     const { dispatch } = this.props;
@@ -166,7 +157,15 @@ class HomeScreen extends React.Component {
     const { stats } = this.state;
     return (
       <SafeAreaView style={styles.container}>
-        <FlatList data={stats} renderItem={this._renderItem} />
+        {!stats ? (
+          <Text>Loading...</Text>
+        ) : (
+          <FlatList
+            data={stats}
+            renderItem={this._renderItem}
+            keyExtractor={this._keyExtractor}
+          />
+        )}
       </SafeAreaView>
     );
   }

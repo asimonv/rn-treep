@@ -12,7 +12,6 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { SafeAreaView } from "react-navigation";
 import statsService from "../services/stats";
-import Layout from "../styles/Layout";
 import { BlurView } from "@react-native-community/blur";
 
 import { BORDER_RADIUS } from "../styles/common.style";
@@ -40,13 +39,6 @@ class StatScreen extends Component {
 
   async componentDidMount() {
     StatusBar.setHidden(true, "slide");
-    const { navigation } = this.props;
-    const stat = navigation.getParam("stat");
-    if (stat) {
-      const { url } = stat;
-      const stats = await statsService.getStat(url);
-      this.setState(prev => ({ stats, fetchingStat: !prev.fetchingStat }));
-    }
   }
 
   componentWillUnmount() {
@@ -54,16 +46,15 @@ class StatScreen extends Component {
   }
 
   render() {
-    const { fetchingStat, stats } = this.state;
     const { navigation } = this.props;
     const stat = navigation.getParam("stat");
-    const { image, title, subtitle } = stat;
+    const { image, title, subtitle, id } = stat;
     return (
       <SafeAreaView style={styles.container} forceInset={{ top: "never" }}>
         <ScrollView bounces={false}>
           <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
             <View style={{ flex: 1 }}>
-              <Transition shared="circle">
+              <Transition shared={`circle-${id}`}>
                 <View style={{ flex: 1, minHeight: 450 }}>
                   {image && <AsyncImage style={styles.image} url={image} />}
                   <View
