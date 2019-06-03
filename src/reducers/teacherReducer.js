@@ -56,6 +56,23 @@ export default function reducer(
     case teacherConstants.TEACHER_GET_COMMENTS_FULFILLED: {
       return { ...state, fetchingComments: false, comments: action.payload };
     }
+    case teacherConstants.TEACHER_POST_COMMENT: {
+      return { ...state, postingComment: true };
+    }
+    case teacherConstants.TEACHER_POST_COMMENT_FULFILLED: {
+      return {
+        ...state,
+        postingComment: false,
+        comments: [{ ...action.payload, animate: true }, ...state.comments]
+      };
+    }
+    case teacherConstants.TEACHER_POST_COMMENT_REJECTED: {
+      return {
+        ...state,
+        postingComment: false,
+        errorPostingComment: action.payload
+      };
+    }
     case teacherConstants.TEACHER_GET_COMMENTS_REJECTED: {
       return {
         ...state,

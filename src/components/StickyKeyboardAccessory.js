@@ -15,9 +15,9 @@ class StickyKeyboardAccessory extends Component {
   }
 
   _onPressSend = () => {
-    this.setState({ text: "" }, () => {
-      this.props.onPressSend(this.state.text);
-    });
+    const { text } = this.state;
+    this.props.onPressSend(text);
+    this.setState({ text: "" });
   };
 
   render() {

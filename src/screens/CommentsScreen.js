@@ -1,5 +1,12 @@
 import React from "react";
-import { FlatList, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  RefreshControl,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View
+} from "react-native";
 import { connect } from "react-redux";
 import AnimatedEllipsis from "react-native-animated-ellipsis";
 import { KeyboardAccessoryView } from "react-native-keyboard-accessory";
@@ -37,6 +44,8 @@ class CommentsScreen extends React.Component {
     />
   );
 
+  _renderListHeader = () => <Message title={timelessMessage} />;
+
   componentDidMount() {
     const {
       dispatch,
@@ -61,6 +70,16 @@ class CommentsScreen extends React.Component {
     dispatch(postComment({ teacherId: id, text }));
   };
 
+  _onRefresh = () => {
+    const {
+      dispatch,
+      teacher: {
+        selectedTeacher: { id }
+      }
+    } = this.props;
+    dispatch(fetchTeacherComments({ teacherId: id }));
+  };
+
   render() {
     const { teacher } = this.props;
     return (
@@ -75,13 +94,19 @@ class CommentsScreen extends React.Component {
           </View>
         ) : (
           <View style={styles.container}>
-            <Message title={timelessMessage} />
             <FlatList
               style={styles.container}
               data={teacher.comments}
               keyExtractor={this._keyExtractor}
               renderItem={this._renderItem}
               ItemSeparatorComponent={this._renderSeparator}
+              ListHeaderComponent={this._renderListHeader}
+              refreshControl={
+                <RefreshControl
+                  refreshing={teacher.fetchingComments}
+                  onRefresh={this._onRefresh}
+                />
+              }
             />
           </View>
         )}

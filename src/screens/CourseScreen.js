@@ -1,7 +1,12 @@
 import React from "react";
-import { RefreshControl, ScrollView, StyleSheet } from "react-native";
+import {
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View
+} from "react-native";
 import { connect } from "react-redux";
-import { Text, View } from "react-native";
 import AnimatedEllipsis from "react-native-animated-ellipsis";
 
 import StatModal from "../components/StatModal";
