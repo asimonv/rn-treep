@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, StyleSheet } from "react-native";
+import { RefreshControl, ScrollView, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import { Text, View } from "react-native";
 import AnimatedEllipsis from "react-native-animated-ellipsis";
@@ -25,6 +25,7 @@ export class CourseScreen extends React.Component {
       interactedBefore: false
     };
     this._onPress = this._onPress.bind(this);
+    this._onRefresh = this._onRefresh.bind(this);
     this._onButtonPressed = this._onButtonPressed.bind(this);
   }
 
@@ -57,6 +58,14 @@ export class CourseScreen extends React.Component {
     );
   }
 
+  _onRefresh() {
+    const { course, showNotification, dispatch } = this.props;
+    const {
+      selectedCourse: { id }
+    } = course;
+    dispatch(fetchCourseStats({ courseId: id }));
+  }
+
   _onButtonPressed(stat) {
     const {
       course: {
@@ -83,7 +92,15 @@ export class CourseScreen extends React.Component {
     const { data, selectedStat, interactedBefore } = this.state;
     return (
       <View style={{ flex: 1 }}>
-        <ScrollView style={styles.container}>
+        <ScrollView
+          style={styles.container}
+          refreshControl={
+            <RefreshControl
+              refreshing={course.fetchingStats}
+              onRefresh={this._onRefresh}
+            />
+          }
+        >
           <HeaderCard
             title={`${selectedCourse.courseNumber} - ${selectedCourse.name}`}
             description={selectedCourse.description}
