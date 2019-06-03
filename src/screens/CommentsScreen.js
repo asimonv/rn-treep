@@ -66,9 +66,13 @@ class CommentsScreen extends React.Component {
     return (
       <SafeAreaView style={styles.container}>
         {teacher.fetchingComments ? (
-          <Text style={styles.header}>
-            Getting comments <AnimatedEllipsis />
-          </Text>
+          <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          >
+            <Text style={styles.header}>
+              Getting comments <AnimatedEllipsis />
+            </Text>
+          </View>
         ) : (
           <View style={styles.container}>
             <Message title={timelessMessage} />
