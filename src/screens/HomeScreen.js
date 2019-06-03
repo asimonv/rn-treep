@@ -7,38 +7,16 @@ import {
   TouchableWithoutFeedback
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
-import styled from "styled-components";
 import { connect } from "react-redux";
 import AnimatedEllipsis from "react-native-animated-ellipsis";
 import { BlurView } from "@react-native-community/blur";
 import { getUserVotes } from "../actions/userActions";
 import statsService from "../services/stats";
-import Layout from "../styles/Layout";
-import { BORDER_RADIUS } from "../styles/common.style";
-import Card from "../components/Card";
 import { Transition } from "react-navigation-fluid-transitions";
 import FastImage from "react-native-fast-image";
+import Layout from "../styles/Layout";
 
 import AsyncImage from "../components/AsyncImage";
-
-const BorderedView = styled.View`
-  border-radius: ${props => {
-    if (props.flat) {
-      return 0;
-    }
-    return BORDER_RADIUS * 3;
-  }};
-  overflow: hidden;
-`;
-
-const ShadowView = styled.View`
-  box-shadow: ${props => {
-    if (props.flat) {
-      return "none";
-    }
-    return "0px 1px 3px rgba(0,0,0,0.2)";
-  }};
-`;
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -158,7 +136,9 @@ class HomeScreen extends React.Component {
     return (
       <SafeAreaView style={styles.container}>
         {!stats ? (
-          <Text>Loading...</Text>
+          <Text style={{ marginHorizontal: Layout.container.margin }}>
+            Loading <AnimatedEllipsis />
+          </Text>
         ) : (
           <FlatList
             data={stats}

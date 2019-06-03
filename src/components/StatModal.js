@@ -12,7 +12,9 @@ export default class HeaderView extends Component {
     super(props);
 
     this.state = {
-      stat: undefined
+      stat: undefined,
+      data: props.data,
+      interactedBefore: props.interactedBefore
     };
 
     this.onPress = this.onPress.bind(this);
@@ -25,8 +27,62 @@ export default class HeaderView extends Component {
   openModal = () => this.refs.modal.open();
   closeModal = () => this.refs.modal.close();
 
+  componentDidMount() {
+    const { interactedBefore, data } = this.state;
+    if (interactedBefore) {
+      const interactedData = data.map(d => ({
+        ...d,
+        selected: false,
+        disabled: !!interactedBefore
+      }));
+      // marks user option
+      const index = interactedBefore.value - 1;
+      interactedData[index].color = "green";
+      interactedData[index].selected = true;
+      this.setState({ data: interactedData });
+    }
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.interactedBefore !== prevState.interactedBefore) {
+      const { data } = nextProps;
+      let interactedData = [];
+      if (nextProps.interactedBefore) {
+        interactedData = data.map(d => ({ ...d, selected: false }));
+        // disables all options
+        interactedData = data.map(d => ({
+          ...d,
+          disabled: !!nextProps.interactedBefore,
+          selected: false
+        }));
+        // marks user option
+        const index = nextProps.interactedBefore.value - 1;
+        interactedData[index].color = "green";
+        interactedData[index].selected = true;
+      } else {
+        // gives the mid option by default
+        interactedData = data.map(d => ({
+          ...d,
+          selected: false,
+          disabled: false
+        }));
+        const mid = parseInt(interactedData.length / 2, 10);
+        interactedData[mid].selected = true;
+        interactedData[mid].value = `${mid + 1}`;
+      }
+      console.log("interactedData", interactedData);
+      return {
+        data: interactedData,
+        interactedBefore: nextProps.interactedBefore
+      };
+    }
+    return null;
+  }
+
   render() {
-    const { interactedBefore, stat, data, title, onButtonPressed } = this.props;
+    const { interactedBefore, stat, title, onButtonPressed } = this.props;
+    const { data } = this.state;
+
     return (
       <Modal
         style={styles.modal}
@@ -43,43 +99,38 @@ export default class HeaderView extends Component {
             </Text>
           )}
         </View>
-        <RadioGroup
-          flexDirection="row"
-          radioButtons={data}
-          onPress={this.onPress}
-        />
+        {data && (
+          <RadioGroup
+            flexDirection="row"
+            radioButtons={data}
+            onPress={this.onPress}
+          />
+        )}
         <View style={styles.buttonsContainer}>
-          {interactedBefore ? (
-            <Button
-              danger
-              large
-              style={{ marginHorizontal: 5 }}
-              title={"Remove Vote"}
-              onPress={() =>
-                onButtonPressed({
-                  voteType: parseInt(stat.meta.repr, 10),
-                  action: "remove"
-                })
-              }
-            />
-          ) : (
-            <Button
-              primary
-              large
-              style={{ marginHorizontal: 5 }}
-              onPress={() =>
-                onButtonPressed({
-                  voteType: parseInt(stat.meta.repr, 10),
-                  value: parseInt(
-                    this.state.data.filter(d => d.selected)[0].value,
-                    10
-                  ),
-                  action: "vote"
-                })
-              }
-              title={"Vote"}
-            />
-          )}
+          <Button
+            danger={!!interactedBefore}
+            primary={!interactedBefore}
+            large
+            style={{ marginHorizontal: 5 }}
+            title={interactedBefore ? "Remove Vote" : "Vote"}
+            onPress={() =>
+              onButtonPressed(
+                interactedBefore
+                  ? {
+                      voteType: parseInt(stat.meta.repr, 10),
+                      action: "remove"
+                    }
+                  : {
+                      voteType: parseInt(stat.meta.repr, 10),
+                      value: parseInt(
+                        data.filter(d => d.selected)[0].value,
+                        10
+                      ),
+                      action: "vote"
+                    }
+              )
+            }
+          />
         </View>
       </Modal>
     );

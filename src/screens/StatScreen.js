@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import {
+  FlatList,
   TouchableWithoutFeedback,
   StatusBar,
   StyleSheet,
@@ -9,46 +10,62 @@ import {
 } from "react-native";
 import { Transition } from "react-navigation-fluid-transitions";
 import PropTypes from "prop-types";
-import styled from "styled-components";
 import { SafeAreaView } from "react-navigation";
+import AnimatedEllipsis from "react-native-animated-ellipsis";
 import statsService from "../services/stats";
 import { BlurView } from "@react-native-community/blur";
+import { colors } from "../styles/common.style";
+import Layout from "../styles/Layout";
 
-import { BORDER_RADIUS } from "../styles/common.style";
-import Card from "../components/Card";
+import StatView from "../components/StatView";
 import AsyncImage from "../components/AsyncImage";
-
-const BorderedView = styled.View`
-  border-radius: ${props => {
-    if (props.flat) {
-      return 0;
-    }
-    return BORDER_RADIUS * 3;
-  }};
-  overflow: hidden;
-`;
 
 class StatScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fetchingStat: true,
-      stats: []
+      fetchingRankedStats: true,
+      rankedStats: []
     };
   }
 
   async componentDidMount() {
     StatusBar.setHidden(true, "slide");
+    const { navigation } = this.props;
+    const stat = navigation.getParam("stat");
+    const { url } = stat;
+    const rankedStats = await statsService.getStat(url);
+    this.setState(prev => ({
+      fetchingRankedStats: !prev.fetchingRankedStats,
+      rankedStats
+    }));
   }
 
   componentWillUnmount() {
     StatusBar.setHidden(false, "slide");
   }
 
+  _renderItem = ({ item, index }) => {
+    return <StatView item={item} index={index} onPress={this._onPress} />;
+  };
+
+  _keyExtractor = item => `${item.id}`;
+
+  _renderSeparator = () => (
+    <View
+      style={{
+        height: 1,
+        width: "100%",
+        backgroundColor: colors.lightgray
+      }}
+    />
+  );
+
   render() {
     const { navigation } = this.props;
     const stat = navigation.getParam("stat");
-    const { image, title, subtitle, id } = stat;
+    const { image, title, subtitle, id, description } = stat;
+    const { fetchingRankedStats, rankedStats } = this.state;
     return (
       <SafeAreaView style={styles.container} forceInset={{ top: "never" }}>
         <ScrollView bounces={false}>
@@ -107,15 +124,30 @@ class StatScreen extends Component {
                 <View
                   style={{
                     flex: 1,
-                    backgroundColor: "white",
-                    padding: 20
+                    backgroundColor: "white"
                   }}
                 >
-                  <Text>
-                    {
-                      "Text vertical center alignment summary Case 1: There is only one Text under View Ios: Use flex with alignItems/justifyContent to be more centered, Adr: height = lineHeight, includeFontPadding: false more centered Case 2: There are two Texts in a line view and the two Text fonts are different, and the Text with a smaller font size does not need to use the height. The larger one is aligned using the above method. The smaller one can only be used with font-size, but not with the line-height and height attributes. In this case, both texts can be centered. Case 3: There are two Texts in a line view and the two Text fonts are different, and the Text with a smaller font size must use the height. The one with the larger font size is aligned using the above method, and the smaller font size uses height with padding and includeFontPadding to achieve alignment. The larger one is aligned using the above method. The smaller one can only be used with font-size, but not with the line-height and height attributes. In this case, both texts can be centered. Case 3: There are two Texts in a line view and the two Text fonts are different, and the Text with a smaller font size must use the height. The one with the larger font size is aligned using the above method, and the smaller font size uses height with padding and includeFontPadding to achieve alignment. The larger one is aligned using the above method. The smaller one can only be used with font-size, but not with the line-height and height attributes. In this case, both texts can be centered. Case 3: There are two Texts in a line view and the two Text fonts are different, and the Text with a smaller font size must use the height. The one with the larger font size is aligned using the above method, and the smaller font size uses height with padding and includeFontPadding to achieve alignment. The larger one is aligned using the above method. The smaller one can only be used with font-size, but not with the line-height and height attributes. In this case, both texts can be centered. Case 3: There are two Texts in a line view and the two Text fonts are different, and the Text with a smaller font size must use the height. The one with the larger font size is aligned using the above method, and the smaller font size uses height with padding and includeFontPadding to achieve alignment."
-                    }
-                  </Text>
+                  {!fetchingRankedStats && (
+                    <Text style={styles.description}>{description}</Text>
+                  )}
+                  {fetchingRankedStats ? (
+                    <Text
+                      style={{
+                        marginHorizontal: Layout.container.margin,
+                        padding: 20
+                      }}
+                    >
+                      Loading <AnimatedEllipsis />
+                    </Text>
+                  ) : (
+                    <FlatList
+                      style={styles.container}
+                      data={rankedStats}
+                      renderItem={this._renderItem}
+                      keyExtractor={this._keyExtractor}
+                      ItemSeparatorComponent={this._renderSeparator}
+                    />
+                  )}
                 </View>
               </Transition>
             </View>
@@ -134,7 +166,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  image: { flex: 1 }
+  image: { flex: 1 },
+  description: {
+    fontSize: 18,
+    color: "gray",
+    padding: 20
+  }
 });
 
 export default StatScreen;

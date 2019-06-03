@@ -1,12 +1,5 @@
 const settingsOptions = [
   {
-    title: "Your votes",
-    id: 0,
-    key: "votes",
-    color: "rgb(34, 167, 240)",
-    icon: "thumbs-up"
-  },
-  {
     title: "Log out",
     color: "red",
     icon: "sign-out",

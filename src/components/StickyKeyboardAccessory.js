@@ -44,7 +44,7 @@ class StickyKeyboardAccessory extends Component {
           onChangeText={text => this.setState({ text })}
         />
         <Button
-          primary
+          light
           title="Send"
           disabled={!this.state.text.trim()}
           style={{ maxWidth: 100, marginLeft: 10 }}

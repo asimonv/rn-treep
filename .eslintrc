@@ -1,16 +1,12 @@
 {
-    "parser": "babel-eslint",
-    "env": {
-        "browser": true
-    },
-    "plugins": [
-        "react"
-    ],
-    "extends": [
-        "eslint:recommended",
-        "plugin:react/recommended"
-    ],
-    "rules": {
-        // overrides
-    }
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true
+  },
+  "plugins": ["react"],
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "rules": {
+    // overrides
+    "react/prop-types": [1, { "ignore": [navigation, dispatch] }]
+  }
 }

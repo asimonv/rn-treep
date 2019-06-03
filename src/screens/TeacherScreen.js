@@ -159,7 +159,7 @@ export class TeacherScreen extends React.Component {
               onPress={this._onPressComments}
               light
               large
-              title="Write a comment"
+              title="See all comments"
             />
           </View>
         </ScrollView>
