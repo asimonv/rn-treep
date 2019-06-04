@@ -3,6 +3,7 @@ package com.treeprn;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.dylanvann.fastimage.FastImageViewPackage;
 import com.reactnativecommunity.netinfo.NetInfoPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
@@ -31,6 +32,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new AsyncStoragePackage(),
             new FastImageViewPackage(),
             new NetInfoPackage(),
             new RNFetchBlobPackage(),

@@ -29,8 +29,8 @@ class CommentsScreen extends React.Component {
   _keyExtractor = item => `${item.id}`;
 
   _renderItem = ({ item }) => {
-    const { text, userId } = item;
-    const comment = { description: text, title: userId };
+    const { text, userId, animate } = item;
+    const comment = { description: text, title: userId, animate };
     return <ListItem onPress={this._onPress} item={comment} />;
   };
 

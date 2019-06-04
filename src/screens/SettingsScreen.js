@@ -1,12 +1,6 @@
 import React from "react";
-import {
-  Alert,
-  AsyncStorage,
-  FlatList,
-  Linking,
-  StyleSheet,
-  View
-} from "react-native";
+import { Alert, FlatList, Linking, StyleSheet, View } from "react-native";
+import AsyncStorage from "@react-native-community/async-storage";
 import { connect } from "react-redux";
 import ListItem from "../components/ListItem";
 import settingsOptions from "../data/settingsOptions";

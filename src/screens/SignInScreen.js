@@ -1,6 +1,6 @@
 import React from "react";
-import { AsyncStorage, StyleSheet, Text, View } from "react-native";
-
+import { StyleSheet, Text, View } from "react-native";
+import AsyncStorage from "@react-native-community/async-storage";
 import AnimatedEllipsis from "react-native-animated-ellipsis";
 import { connect } from "react-redux";
 import { signIn } from "../actions/authActions";
@@ -63,17 +63,19 @@ export class SignInScreen extends React.Component {
     this.props.dispatch(signIn({ ...value }));
   };
 
-  async componentDidUpdate(prevProps) {
+  static async getDerivedStateFromProps(nextProps, prevState) {
     const {
       auth: { user },
-      navigation: { navigate }
-    } = this.props;
-    const {
-      auth: { user: oldUser }
-    } = prevProps;
-    if (oldUser !== user) {
-      const userToken = await AsyncStorage.setItem("user", user);
-      navigate("App");
+      navigate
+    } = nextProps;
+    if (user) {
+      try {
+        await AsyncStorage.setItem("user", user);
+        navigate("App");
+      } catch (e) {
+        // saving error
+        console.log(e);
+      }
     }
   }
 }

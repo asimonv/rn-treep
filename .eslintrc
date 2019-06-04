@@ -3,10 +3,12 @@
   "env": {
     "browser": true
   },
-  "plugins": ["react"],
+  "plugins": ["react", "react-hooks"],
   "extends": ["eslint:recommended", "plugin:react/recommended"],
   "rules": {
     // overrides
-    "react/prop-types": [1, { "ignore": [navigation, dispatch] }]
+    "react/prop-types": [1, { "ignore": [navigation, dispatch] }],
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   }
 }

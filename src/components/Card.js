@@ -37,8 +37,6 @@ const ShadowView = styled.View`
   }};
 `;
 
-const ShadowViewAnimated = Animated.createAnimatedComponent(ShadowView);
-
 class Card extends Component {
   constructor(props) {
     super(props);
@@ -92,17 +90,9 @@ class Card extends Component {
       fetching
     } = this.props;
     const { title, subtitle, image } = item;
-    const animatedStyle = {
-      transform: [{ scale: this.animatedValue }]
-    };
     return (
-      <TouchableWithoutFeedback
-        onPress={() => onPress(item)}
-        onPressIn={this._handlePressIn}
-        onPressOut={this._handlePressOut}
-        disabled={!!flat}
-      >
-        <ShadowViewAnimated style={{ ...animatedStyle }}>
+      <TouchableWithoutFeedback onPress={() => onPress(item)} disabled={!!flat}>
+        <ShadowView>
           <Transition shared="circle">
             <BorderedView flat={flat}>
               <BorderedView flat={flat}>
@@ -145,7 +135,7 @@ class Card extends Component {
               </BorderedView>
             </BorderedView>
           </Transition>
-        </ShadowViewAnimated>
+        </ShadowView>
       </TouchableWithoutFeedback>
     );
   }

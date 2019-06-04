@@ -55,7 +55,7 @@ export default function Button(props) {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-    flex: 1,
+    width: "100%",
     borderRadius: Layout.container.borderRadius
   }
 });

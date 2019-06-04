@@ -38,6 +38,7 @@ class StickyKeyboardAccessory extends Component {
           style={{
             flex: 1
           }}
+          value={this.state.text}
           multiline
           placeholder="Add a comment..."
           returnKeyType="done"

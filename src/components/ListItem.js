@@ -2,21 +2,35 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-
+import { useSpring, animated } from "react-spring";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { colors, BORDER_RADIUS } from "../styles/common.style";
 
 const size = 30;
+const AnimatedView = animated(View);
 
 export default function ListItem(props) {
   const { item } = props;
+  const { animate } = item;
+
+  const fading = useSpring({
+    config: { duration: 1500 },
+    to: [{ backgroundColor: "#e4f1fe" }, { backgroundColor: "white" }],
+    from: { backgroundColor: "white" }
+  });
+
   return (
     <TouchableOpacity
       style={styles.button}
       disabled={item.disabled}
       onPress={e => props.onPress(e, props)}
     >
-      <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
+      <AnimatedView
+        style={[
+          { flex: 1, flexDirection: "row", alignItems: "center", padding: 10 },
+          animate ? { ...fading } : {}
+        ]}
+      >
         {item.icon && (
           <View
             style={[
@@ -41,7 +55,7 @@ export default function ListItem(props) {
             color={colors.lightgray}
           />
         )}
-      </View>
+      </AnimatedView>
     </TouchableOpacity>
   );
 }
@@ -58,7 +72,6 @@ ListItem.propTypes = {
 
 const styles = StyleSheet.create({
   button: {
-    padding: 10,
     flex: 1,
     flexDirection: "row",
     alignItems: "flex-start"
