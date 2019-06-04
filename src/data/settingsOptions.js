@@ -8,7 +8,9 @@ const settingsOptions = [
   },
   {
     title: "About",
-    color: "rgb(54, 215, 183)",
+    description:
+      "Because sometimes you are curious enough 👀❓💻🖱✨🧠🌱🤖🌺📲🕊❄️☕️🍵 ",
+    color: "rgb(165, 55, 253)",
     icon: "code",
     id: 2,
     key: "info"
