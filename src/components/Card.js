@@ -15,6 +15,7 @@ import styled from "styled-components";
 import { BORDER_RADIUS, colors } from "../styles/common.style";
 import Layout from "../styles/Layout";
 import AsyncImage from "./AsyncImage";
+import ShadowView from "./ShadowView";
 import StatView from "./StatView";
 
 const BorderedView = styled.View`
@@ -26,15 +27,6 @@ const BorderedView = styled.View`
     return BORDER_RADIUS * 3;
   }};
   overflow: hidden;
-`;
-
-const ShadowView = styled.View`
-  box-shadow: ${props => {
-    if (props.flat) {
-      return "none";
-    }
-    return "0px 1px 3px rgba(0,0,0,0.2)";
-  }};
 `;
 
 class Card extends Component {
@@ -103,7 +95,12 @@ class Card extends Component {
                     flex: 1
                   }}
                 >
-                  <View style={{ padding: 20, ...headerStyle }}>
+                  <View
+                    style={{
+                      padding: Layout.container.margin * 2,
+                      ...headerStyle
+                    }}
+                  >
                     {title && <Text style={styles.title}>{title}</Text>}
                     {subtitle && (
                       <Text style={styles.subtitle}>{subtitle}</Text>

@@ -3,6 +3,7 @@ import { StyleSheet, View } from "react-native";
 
 import StatCard from "./StatCard";
 import { cardType } from "../constants/enums";
+import Layout from "../styles/Layout";
 
 export default class StatsView extends React.Component {
   constructor(props) {
@@ -38,6 +39,6 @@ export default class StatsView extends React.Component {
 
 const styles = StyleSheet.create({
   statCard: {
-    marginTop: 5
+    marginTop: Layout.container.margin * 1.5
   }
 });

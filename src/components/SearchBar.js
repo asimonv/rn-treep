@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, TextInput, View } from "react-native";
+import { colors } from "../styles/common.style";
 
 export default class SearchBar extends React.Component {
   constructor(props) {
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
   focused: {
     height: 40,
     justifyContent: "center",
-    borderColor: "#2684FF",
+    borderColor: colors.tintColor,
     borderWidth: 1,
     borderRadius: 5
   }

@@ -35,6 +35,11 @@ export class SignInScreen extends React.Component {
     title: "Please sign in"
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -60,23 +65,24 @@ export class SignInScreen extends React.Component {
 
   _signInAsync = () => {
     const value = this._form.getValue(); // use that ref to get the form value
+    console.log("sending: ", value);
     this.props.dispatch(signIn({ ...value }));
   };
 
-  static async getDerivedStateFromProps(nextProps, prevState) {
-    const {
-      auth: { user },
-      navigate
-    } = nextProps;
-    if (user) {
-      try {
-        await AsyncStorage.setItem("user", user);
-        navigate("App");
-      } catch (e) {
-        // saving error
-        console.log(e);
-      }
+  async componentDidUpdate(prevProps, prevState) {
+    if (prevProps.auth.user !== this.props.auth.user) {
+      const {
+        navigation: { navigate }
+      } = this.props;
+      await AsyncStorage.setItem("user", this.props.auth.user);
+      navigate("App");
     }
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.auth !== prevState.auth) {
+      return { auth: nextProps.auth };
+    } else return null;
   }
 }
 

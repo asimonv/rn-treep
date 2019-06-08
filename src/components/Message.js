@@ -16,19 +16,18 @@ const MessageContainer = styled.View`
     }
     return colors.white;
   }};
-  border: 1px solid
-    ${props => {
-      return "lightgray";
-    }};
-  padding: ${Layout.container.margin}px;
+  padding: ${Layout.container.margin * 1.5}px ${Layout.container.margin * 2}px;
   margin: ${Layout.container.margin}px;
-  border-radius: ${BORDER_RADIUS};
+  border-radius: ${BORDER_RADIUS * 3};
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
 `;
 
 const Message = ({ title }) => {
   return (
     <MessageContainer>
-      <Text>{title}</Text>
+      <Text style={{ fontWeight: "600", color: colors.gray, fontSize: 16 }}>
+        {title}
+      </Text>
     </MessageContainer>
   );
 };

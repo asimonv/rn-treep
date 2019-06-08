@@ -9,9 +9,11 @@ import {
 } from "react-native";
 import Highlighter from "react-native-highlight-words";
 import { connect } from "react-redux";
-
+import { colors } from "../styles/common.style";
 import SearchBar from "../components/SearchBar";
 import HeaderView from "../components/HeaderView";
+import AsyncImage from "../components/AsyncImage";
+import Message from "../components/Message";
 import searchService from "../services/search";
 import { courseSet } from "../actions/courseActions";
 import { teacherSet } from "../actions/teacherActions";
@@ -19,7 +21,11 @@ import Layout from "../styles/Layout";
 
 const EmptyComponent = ({ title }) => (
   <View style={styles.emptyContainer}>
-    <Text style={styles.emptyText}>{title}</Text>
+    <AsyncImage
+      style={{ height: 300, width: "100%" }}
+      url="https://assets-ouch.icons8.com/preview/793/ec8d5c9c-6c4e-428c-b1a9-e78fa5107ccb.png"
+    />
+    <Message title={title} />
   </View>
 );
 
@@ -119,7 +125,7 @@ export class SearchScreen extends React.Component {
             <EmptyComponent
               title={
                 this.state.query.trim() === ""
-                  ? ""
+                  ? "Hi there! My name is Aíp. Type on the 🔝 search bar for a teacher or a course."
                   : "No results. Try searching for something else."
               }
             />
@@ -159,5 +165,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     paddingTop: 8,
     paddingBottom: 8
+  },
+  emptyText: {
+    fontSize: 18,
+    fontWeight: "500",
+    color: colors.gray
   }
 });

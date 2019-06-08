@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { TextInput, View } from "react-native";
 import PropTypes from "prop-types";
-
+import { BORDER_RADIUS } from "../styles/common.style";
 import Button from "./Button";
 import Layout from "../styles/Layout";
 
@@ -28,15 +28,14 @@ class StickyKeyboardAccessory extends Component {
           display: "flex",
           alignItems: "center",
           flexDirection: "row",
-          borderWidth: 1,
-          borderColor: "lightgray",
-          borderRadius: 5,
+          margin: Layout.container.margin / 2,
           padding: Layout.container.margin / 2
         }}
       >
         <TextInput
           style={{
-            flex: 1
+            flex: 1,
+            fontSize: 16
           }}
           value={this.state.text}
           multiline

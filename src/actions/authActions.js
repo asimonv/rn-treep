@@ -2,18 +2,18 @@ import authService from "../services/auth";
 import { authConstants } from "../constants";
 
 const request = (constant, data) => ({
-  type: authConstants.AUTH_REQUEST,
+  type: constant,
   data
 });
 
 const success = (constant, data, res) => ({
-  type: authConstants.AUTH_REQUEST_FULLFILED,
+  type: constant,
   payload: res,
   data
 });
 
 const reject = (constant, data) => ({
-  type: authConstants.AUTH_REQUEST_REJECTED,
+  type: constant,
   payload: data
 });
 

@@ -113,8 +113,7 @@ class CommentsScreen extends React.Component {
         <KeyboardAccessoryView
           inSafeAreaView
           alwaysVisible
-          hideBorder
-          style={{ backgroundColor: "white", margin: Layout.container.margin }}
+          style={{ backgroundColor: "white" }}
         >
           <StickyKeyboardAccessory onPressSend={this._onPressSend} />
         </KeyboardAccessoryView>

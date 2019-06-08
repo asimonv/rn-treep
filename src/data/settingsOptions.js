@@ -8,8 +8,7 @@ const settingsOptions = [
   },
   {
     title: "About",
-    description:
-      "Because sometimes you are curious enough 👀❓💻🖱✨🧠🌱🤖🌺📲🕊❄️☕️🍵 ",
+    description: "Because sometimes you are curious enough.",
     color: "rgb(165, 55, 253)",
     icon: "code",
     id: 2,
