@@ -22,6 +22,7 @@ export const colors = {
   noticeText: "#fff",
   moreInfo: "gray",
   light: "rgb(228, 241, 254)",
+  grayBackground: "#fbfbfb",
   text: {
     light: tintColor
   },

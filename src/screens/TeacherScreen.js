@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Alert,
   RefreshControl,
   ScrollView,
   StyleSheet,
@@ -132,7 +131,7 @@ export class TeacherScreen extends React.Component {
             showTitle
             containerStyle={{
               marginHorizontal: Layout.container.margin,
-              marginVertical: Layout.container.margin * 2
+              marginVertical: Layout.container.margin * 0.9
             }}
             headerType="vertical"
           />

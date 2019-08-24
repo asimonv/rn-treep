@@ -30,7 +30,7 @@ export default function StatCard(props) {
               justifyContent: "space-between"
             }}
           >
-            <View style={{ flexDirection: "column", justifyContent: "center" }}>
+            <View style={{ flexDirection: "column" }}>
               <Text style={styles.statTitle}>{_.capitalize(stat.title)}</Text>
               {stat.voted && (
                 <View
@@ -64,15 +64,16 @@ const styles = StyleSheet.create({
     backgroundColor: "blue",
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingHorizontal: Layout.container.margin * 2,
-    paddingVertical: Layout.container.margin,
+    paddingHorizontal: Layout.container.margin * 1.5,
+    paddingVertical: Layout.container.margin / 2,
     alignItems: "center",
     borderRadius: BORDER_RADIUS
   },
   statTitle: {
     color: "white",
     fontSize: 16,
-    fontWeight: "bold"
+    fontWeight: "bold",
+    marginTop: 5
   },
   statValue: {
     color: "white",

@@ -10,12 +10,14 @@ import {
 } from "react-native";
 import { Transition } from "react-navigation-fluid-transitions";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import { SafeAreaView } from "react-navigation";
 import AnimatedEllipsis from "react-native-animated-ellipsis";
 import statsService from "../services/stats";
 import { BlurView } from "@react-native-community/blur";
 import { colors } from "../styles/common.style";
 import Layout from "../styles/Layout";
+import { teacherSet } from "../actions/teacherActions";
 
 import StatView from "../components/StatView";
 import AsyncImage from "../components/AsyncImage";
@@ -27,6 +29,7 @@ class StatScreen extends Component {
       fetchingRankedStats: true,
       rankedStats: []
     };
+    this._onPress = this._onPress.bind(this);
   }
 
   async componentDidMount() {
@@ -43,6 +46,11 @@ class StatScreen extends Component {
 
   componentWillUnmount() {
     StatusBar.setHidden(false, "slide");
+  }
+
+  _onPress(item) {
+    this.props.dispatch(teacherSet(item));
+    this.props.navigation.navigate("Teacher");
   }
 
   _renderItem = ({ item, index }) => {
@@ -174,4 +182,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default StatScreen;
+export default connect()(StatScreen);

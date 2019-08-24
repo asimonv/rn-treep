@@ -17,14 +17,14 @@ const MessageContainer = styled.View`
     return colors.white;
   }};
   padding: ${Layout.container.margin * 1.5}px ${Layout.container.margin * 2}px;
-  margin: ${Layout.container.margin}px;
+  margin: ${props => props.style.margin || Layout.container.margin}px;
   border-radius: ${BORDER_RADIUS * 3};
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
 `;
 
-const Message = ({ title }) => {
+const Message = ({ title, style }) => {
   return (
-    <MessageContainer>
+    <MessageContainer style={style}>
       <Text style={{ fontWeight: "600", color: colors.gray, fontSize: 16 }}>
         {title}
       </Text>

@@ -19,7 +19,7 @@ import { colors } from "../styles/common.style";
 import Layout from "../styles/Layout";
 
 const timelessMessage =
-  "This messages are timeless and anonymous, so please be kind. Also, don't expect a reply :-)";
+  "These messages are timeless and anonymous, so please be kind. Also, don't expect a reply :-)";
 
 class CommentsScreen extends React.Component {
   static navigationOptions = {

@@ -19,12 +19,10 @@ export default class StatsView extends React.Component {
             x =>
               x.voteType === value.meta.repr && parent.id === x.info.foreign_key
           );
-          const stat = { title: key, ...value, voted };
+          const stat = { title: value.voteType, ...value, voted };
           return (
             <StatCard
-              cardType={
-                key == "popularity" ? cardType.DEFAULT : cardType.PRIMARY
-              }
+              cardType={key == 0 ? cardType.DEFAULT : cardType.PRIMARY}
               key={key}
               style={styles.statCard}
               stat={stat}

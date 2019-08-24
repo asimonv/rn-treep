@@ -118,7 +118,8 @@ export default class HeaderView extends Component {
                 interactedBefore
                   ? {
                       voteType: parseInt(stat.meta.repr, 10),
-                      action: "remove"
+                      action: "remove",
+                      value: parseInt(data.filter(d => d.selected)[0].value, 10)
                     }
                   : {
                       voteType: parseInt(stat.meta.repr, 10),

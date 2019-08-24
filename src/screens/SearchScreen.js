@@ -3,7 +3,6 @@ import {
   SafeAreaView,
   SectionList,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View
 } from "react-native";
@@ -12,7 +11,6 @@ import { connect } from "react-redux";
 import { colors } from "../styles/common.style";
 import SearchBar from "../components/SearchBar";
 import HeaderView from "../components/HeaderView";
-import AsyncImage from "../components/AsyncImage";
 import Message from "../components/Message";
 import searchService from "../services/search";
 import { courseSet } from "../actions/courseActions";
@@ -21,10 +19,6 @@ import Layout from "../styles/Layout";
 
 const EmptyComponent = ({ title }) => (
   <View style={styles.emptyContainer}>
-    <AsyncImage
-      style={{ height: 300, width: "100%" }}
-      url="https://assets-ouch.icons8.com/preview/793/ec8d5c9c-6c4e-428c-b1a9-e78fa5107ccb.png"
-    />
     <Message title={title} />
   </View>
 );
@@ -88,7 +82,7 @@ export class SearchScreen extends React.Component {
 
   _renderHeader = title => <HeaderView title={title} />;
 
-  _renderItem = (item, section, index) => (
+  _renderItem = (item, section) => (
     <TouchableOpacity onPress={() => this._onPress(item, section)}>
       <Highlighter
         highlightStyle={{ backgroundColor: "yellow", fontWeight: "bold" }}
@@ -125,7 +119,7 @@ export class SearchScreen extends React.Component {
             <EmptyComponent
               title={
                 this.state.query.trim() === ""
-                  ? "Hi there! My name is Aíp. Type on the 🔝 search bar for a teacher or a course."
+                  ? "Hi there! My name is 0x50ed61👩🏻. Search for a course or teacher in the bar above me."
                   : "No results. Try searching for something else."
               }
             />

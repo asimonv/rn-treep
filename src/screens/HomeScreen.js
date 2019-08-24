@@ -1,6 +1,7 @@
 import React from "react";
 import {
   FlatList,
+  RefreshControl,
   StyleSheet,
   Text,
   View,
@@ -15,8 +16,10 @@ import statsService from "../services/stats";
 import { Transition } from "react-navigation-fluid-transitions";
 import FastImage from "react-native-fast-image";
 import Layout from "../styles/Layout";
+import { colors } from "../styles/common.style";
 
 import AsyncImage from "../components/AsyncImage";
+import Message from "../components/Message";
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -32,6 +35,7 @@ class HomeScreen extends React.Component {
     this._fetchStats = this._fetchStats.bind(this);
     this._onPressStat = this._onPressStat.bind(this);
     this._renderItem = this._renderItem.bind(this);
+    this._onRefresh = this._onRefresh.bind(this);
   }
 
   async _fetchStats() {
@@ -47,8 +51,8 @@ class HomeScreen extends React.Component {
   }
 
   _renderItem({ item }) {
-    const { title, subtitle, image, id } = item;
-    return (
+    const { title, subtitle, image, id, statType } = item;
+    return statType == 0 ? (
       <TouchableWithoutFeedback onPress={() => this._onPressStat(item)}>
         <View
           style={{
@@ -120,10 +124,17 @@ class HomeScreen extends React.Component {
           </Transition>
         </View>
       </TouchableWithoutFeedback>
+    ) : (
+      <Message title={title} style={{ margin: 20 }} />
     );
   }
 
   _keyExtractor = (item, index) => `${index}`;
+
+  _onRefresh = async () => {
+    this.setState(prev => ({ fetchingStats: !prev.fetchingStats }));
+    await this._fetchStats();
+  };
 
   async componentDidMount() {
     const { dispatch } = this.props;
@@ -132,7 +143,7 @@ class HomeScreen extends React.Component {
   }
 
   render() {
-    const { stats } = this.state;
+    const { stats, fetchingStats } = this.state;
     return (
       <SafeAreaView style={styles.container}>
         {!stats ? (
@@ -144,6 +155,12 @@ class HomeScreen extends React.Component {
             data={stats}
             renderItem={this._renderItem}
             keyExtractor={this._keyExtractor}
+            refreshControl={
+              <RefreshControl
+                refreshing={fetchingStats}
+                onRefresh={this._onRefresh}
+              />
+            }
           />
         )}
       </SafeAreaView>
