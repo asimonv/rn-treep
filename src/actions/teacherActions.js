@@ -1,24 +1,24 @@
-import { teacherConstants } from "../constants";
-import teacherService from "../services/teacher";
+import { teacherConstants } from '../constants';
+import teacherService from '../services/teacher';
 
 export const teacherSet = teacher => ({
   type: teacherConstants.TEACHER_SET,
-  payload: teacher
+  payload: teacher,
 });
 
 const request = ({ teacherId }, constant) => ({
   type: constant,
-  teacherId
+  teacherId,
 });
 
 const success = (res, constant) => ({
   type: constant,
-  payload: res
+  payload: res,
 });
 
 const reject = (e, constant) => ({
   type: constant,
-  payload: e
+  payload: e,
 });
 
 export const postComment = data => async dispatch => {
@@ -56,9 +56,7 @@ export const teacherSendStat = data => async dispatch => {
   dispatch(
     success(
       data,
-      action === "vote"
-        ? teacherConstants.TEACHER_POST_STAT
-        : teacherConstants.TEACHER_REMOVE_STAT
+      action === 'vote' ? teacherConstants.TEACHER_POST_STAT : teacherConstants.TEACHER_REMOVE_STAT
     )
   );
 };

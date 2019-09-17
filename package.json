@@ -1,56 +1,65 @@
 {
-  "name": "TreepRN",
+  "name": "treep",
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "start": "react-native start",
+    "test": "jest",
+    "lint": "eslint ."
   },
   "dependencies": {
-    "@react-native-community/async-storage": "^1.4.2",
+    "@react-native-community/async-storage": "^1.6.1",
     "@react-native-community/blur": "^3.3.1",
-    "react": "^16.8.0",
-    "react-native": "^0.59",
-    "react-native-animated-ellipsis": "^1.1.0",
-    "react-native-fast-image": "^6.0.1",
-    "react-native-gesture-handler": "^1.0.12",
+    "prop-types": "^15.7.2",
+    "react": "16.8.6",
+    "react-native": "0.60.5",
+    "react-native-fast-image": "^7.0.2",
+    "react-native-gesture-handler": "^1.4.1",
     "react-native-highlight-words": "^1.0.1",
     "react-native-in-app-notification": "^3.0.0",
     "react-native-keyboard-accessory": "^0.1.9",
-    "react-native-linear-gradient": "^2.5.3",
+    "react-native-keyboard-aware-scroll-view": "^0.9.1",
+    "react-native-linear-gradient": "^2.5.6",
     "react-native-modalbox": "^1.7.1",
     "react-native-radio-buttons-group": "^1.0.7",
     "react-native-read-more-text": "^1.1.0",
-    "react-native-vector-icons": "^6.2.0",
-    "react-navigation": "3.0.9",
+    "react-native-reanimated": "^1.2.0",
+    "react-native-vector-icons": "^6.6.0",
+    "react-navigation": "^4.0.0",
     "react-navigation-fluid-transitions": "^0.3.2",
-    "react-redux": "^6.0.0",
-    "react-spring": "^8.0.20",
-    "redux": "^4.0.0",
-    "redux-action-buffer": "^1.2.0",
+    "react-navigation-stack": "^1.5.3",
+    "react-navigation-tabs": "^2.4.0",
+    "react-redux": "^7.1.1",
+    "react-spring": "^8.0.27",
+    "redux": "^4.0.4",
     "redux-logger": "^3.0.6",
-    "redux-persist": "^5.9.1",
-    "redux-thunk": "^2.2.0",
-    "styled-components": "^4.2.0",
-    "tcomb-form-native": "^0.6.20",
-    "url-parse": ">=1.4.3"
+    "redux-persist": "^6.0.0",
+    "redux-thunk": "^2.3.0",
+    "styled-components": "^4.3.2",
+    "tcomb-form-native": "^0.6.20"
   },
   "devDependencies": {
-    "babel-eslint": "^10.0.1",
-    "babel-jest": "23.6.0",
+    "@babel/core": "^7.6.0",
+    "@babel/runtime": "^7.6.0",
+    "@react-native-community/eslint-config": "^0.0.5",
+    "babel-eslint": "^10.0.3",
+    "babel-jest": "^24.9.0",
     "eslint": "^5.16.0",
-    "eslint-plugin-react": "^7.12.4",
-    "eslint-plugin-react-hooks": "^1.6.0",
-    "jest": "23.6.0",
-    "metro-react-native-babel-preset": "0.51.1",
-    "react-test-renderer": "16.6.3"
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.3.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^22.17.0",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react-hooks": "^2.0.1",
+    "jest": "^24.9.0",
+    "metro-react-native-babel-preset": "^0.56.0",
+    "prettier": "^1.18.2",
+    "prettier-eslint": "^9.0.0",
+    "react-test-renderer": "16.8.6"
   },
   "jest": {
     "preset": "react-native"
-  },
-  "rnpm": {
-    "assets": [
-      "./src/assets/fonts/"
-    ]
   }
 }

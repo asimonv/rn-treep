@@ -1,93 +1,94 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import AsyncStorage from "@react-native-community/async-storage";
-import AnimatedEllipsis from "react-native-animated-ellipsis";
-import { connect } from "react-redux";
-import { signIn } from "../actions/authActions";
-import Button from "../components/Button";
+import React from 'react';
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+import { connect } from 'react-redux';
+import t from 'tcomb-form-native';
+import { signIn } from '../actions/authActions';
+import Button from '../components/Button';
+import Loader from '../components/Loader';
 
-import t from "tcomb-form-native";
-const Form = t.form.Form;
+const { Form } = t.form;
 
 const User = t.struct({
-  email: t.String,
-  password: t.String
+  username: t.String,
+  password: t.String,
 });
 
 const options = {
   fields: {
-    email: {
-      error: "You forgot your UC email",
-      help: "Please use your UC email",
-      autoCapitalize: "none"
+    username: {
+      error: 'You forgot your UC username',
+      help: 'Please use your UC username (without @uc.cl)',
+      autoCapitalize: 'none',
     },
     password: {
-      error: "Please add your password",
-      help: "Your UC Login password. Do not worry, Treep does not save it",
+      error: 'Please add your password',
+      help: 'Your UC Login password. Do not worry, Treep does not save it',
       secureTextEntry: true,
-      password: true
-    }
-  }
+      password: true,
+    },
+  },
 };
 
 export class SignInScreen extends React.Component {
   static navigationOptions = {
-    title: "Please sign in"
+    title: 'Sign in',
   };
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      username: null,
+      password: null,
+    };
   }
 
   render() {
+    const { auth } = this.props;
+    const { loadingUser, error } = auth;
     return (
-      <View style={styles.container}>
-        <Form
-          type={User}
-          ref={c => (this._form = c)} // assign a ref
-          options={options}
-        />
-        <Button
-          disabled={this.props.auth.loadingUser}
-          title="Sign in!"
-          onPress={this._signInAsync}
-        />
-        {this.props.auth.loadingUser && (
-          <Text>
-            Signing you in <AnimatedEllipsis />
-          </Text>
-        )}
-        {this.props.auth.error && <Text>error</Text>}
-      </View>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
+          <Form
+            type={User}
+            ref={c => (this._form = c)} // assign a ref
+            options={options}
+            value={this.state}
+          />
+          <Button disabled={loadingUser} title="Sign in" onPress={this._signInAsync} />
+          {loadingUser && <Loader loading={loadingUser} title="Logging you in..." />}
+          {error && <Text style={styles.message}>{error}</Text>}
+        </View>
+      </SafeAreaView>
     );
   }
 
   _signInAsync = () => {
     const value = this._form.getValue(); // use that ref to get the form value
-    console.log("sending: ", value);
+    this.setState({ ...value });
     this.props.dispatch(signIn({ ...value }));
   };
 
   async componentDidUpdate(prevProps, prevState) {
     if (prevProps.auth.user !== this.props.auth.user) {
       const {
-        navigation: { navigate }
+        navigation: { navigate },
       } = this.props;
-      await AsyncStorage.setItem("user", this.props.auth.user);
-      navigate("App");
+      await AsyncStorage.setItem('user', this.props.auth.user);
+      navigate('App');
     }
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.auth !== prevState.auth) {
       return { auth: nextProps.auth };
-    } else return null;
+    }
+    return null;
   }
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps)(SignInScreen);
@@ -95,6 +96,9 @@ export default connect(mapStateToProps)(SignInScreen);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20
-  }
+    padding: 20,
+  },
+  message: {
+    marginTop: 5,
+  },
 });

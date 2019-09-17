@@ -1,23 +1,25 @@
-import React from "react";
-import styled from "styled-components/native";
-import { Text } from "react-native";
-import PropTypes from "prop-types";
-import Layout from "../styles/Layout";
-import { colors, BORDER_RADIUS } from "../styles/common.style";
+import React from 'react';
+import styled from 'styled-components/native';
+import { Text } from 'react-native';
+import PropTypes from 'prop-types';
+import Layout from '../styles/Layout';
+import { colors, BORDER_RADIUS } from '../styles/common.style';
 
 const MessageContainer = styled.View`
   background-color: ${props => {
     if (props.primary) {
       return colors.buttons.blue;
-    } else if (props.danger) {
+    }
+    if (props.danger) {
       return colors.buttons.red;
-    } else if (props.light) {
+    }
+    if (props.light) {
       return colors.buttons.light;
     }
     return colors.white;
   }};
   padding: ${Layout.container.margin * 1.5}px ${Layout.container.margin * 2}px;
-  margin: ${props => props.style.margin || Layout.container.margin}px;
+  margin: ${props => (props.style ? props.style.margin : undefined) || Layout.container.margin}px;
   border-radius: ${BORDER_RADIUS * 3};
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
 `;
@@ -25,15 +27,13 @@ const MessageContainer = styled.View`
 const Message = ({ title, style }) => {
   return (
     <MessageContainer style={style}>
-      <Text style={{ fontWeight: "600", color: colors.gray, fontSize: 16 }}>
-        {title}
-      </Text>
+      <Text style={{ fontWeight: '600', color: colors.gray, fontSize: 16 }}>{title}</Text>
     </MessageContainer>
   );
 };
 
 Message.propTypes = {
-  title: PropTypes.string
+  title: PropTypes.string,
 };
 
 export default Message;

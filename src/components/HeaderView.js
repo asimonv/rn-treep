@@ -1,13 +1,8 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-} from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 
 export default function HeaderView(props) {
-  return (
-    <Text style={styles.header}>{props.title}</Text>
-  );
+  return <Text style={styles.header}>{props.title}</Text>;
 }
 
 const styles = StyleSheet.create({

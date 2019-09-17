@@ -1,28 +1,28 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
-import FastImage from "react-native-fast-image";
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 const styles = StyleSheet.create({
   imageOverlay: {
     flex: 1,
-    width: "100%",
-    height: "100%",
-    position: "absolute"
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
   },
   container: {
-    justifyContent: "center",
-    backgroundColor: "lightgray"
+    justifyContent: 'center',
+    backgroundColor: 'lightgray',
   },
   spinnerStyle: {
-    position: "absolute",
+    position: 'absolute',
     left: 0,
     right: 0,
     top: 0,
     bottom: 0,
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: -1000
-  }
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: -1000,
+  },
 });
 
 class AsyncImage extends React.Component {
@@ -33,25 +33,25 @@ class AsyncImage extends React.Component {
 
   onImageLoad = () => {
     Animated.timing(this.imageAnimated, {
-      toValue: 1
+      toValue: 1,
     }).start();
     this.spinner.animating = false;
   };
 
   render() {
-    const size = this.props.headerType == "vertical" ? 60 : 30;
+    const size = this.props.headerType == 'vertical' ? 60 : 30;
     const image = {
       width: size,
-      height: size
+      height: size,
     };
     const imageContainer = {
-      overflow: "hidden",
+      overflow: 'hidden',
       width: size,
       height: size,
       borderRadius: size / 2,
       marginRight: 5,
       borderWidth: 2,
-      borderColor: "lightgray"
+      borderColor: 'lightgray',
     };
     const { style, url, headerType, resizeMode } = this.props;
     const containerStyle = headerType
@@ -63,7 +63,7 @@ class AsyncImage extends React.Component {
           style={[styles.imageOverlay, style]}
           source={{
             uri: url,
-            priority: FastImage.priority.normal
+            priority: FastImage.priority.normal,
           }}
           resizeMode={resizeMode}
         />

@@ -1,19 +1,19 @@
-import { userConstants } from "../constants";
-import userService from "../services/user";
+import { userConstants } from '../constants';
+import userService from '../services/user';
 
 const request = (constant, payload) => ({
   type: constant,
-  payload
+  payload,
 });
 
 const reject = (err, constant) => ({
   type: constant,
-  payload: err
+  payload: err,
 });
 
 const success = (res, constant) => ({
   type: constant,
-  payload: res
+  payload: res,
 });
 
 export const getUserVotes = () => async dispatch => {
@@ -29,19 +29,14 @@ export const getUserVotes = () => async dispatch => {
 export const sendStat = data => async dispatch => {
   const { action } = data;
   dispatch(
-    request(
-      action === "vote"
-        ? userConstants.USER_SEND_STAT
-        : userConstants.USER_REMOVE_STAT,
-      data
-    )
+    request(action === 'vote' ? userConstants.USER_SEND_STAT : userConstants.USER_REMOVE_STAT, data)
   );
   try {
     const res = await userService.sendStat(data);
     dispatch(
       success(
         res,
-        action === "vote"
+        action === 'vote'
           ? userConstants.USER_SEND_STAT_FULFILLED
           : userConstants.USER_REMOVE_STAT_FULFILLED
       )
@@ -50,7 +45,7 @@ export const sendStat = data => async dispatch => {
     dispatch(
       reject(
         e,
-        action === "vote"
+        action === 'vote'
           ? userConstants.USER_SEND_STAT_REJECTED
           : userConstants.USER_REMOVE_STAT_REJECTED
       )

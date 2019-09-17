@@ -1,8 +1,8 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import ReadMore from "react-native-read-more-text";
-import { colors } from "../styles/common.style";
-import AsyncImage from "./AsyncImage";
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import ReadMore from 'react-native-read-more-text';
+import { colors } from '../styles/common.style';
+import AsyncImage from './AsyncImage';
 
 const _renderTruncatedFooter = handlePress => {
   return (
@@ -14,10 +14,7 @@ const _renderTruncatedFooter = handlePress => {
 
 const _renderRevealedFooter = handlePress => {
   return (
-    <Text
-      style={{ color: colors.moreInfo, marginTop: 5 }}
-      onPress={handlePress}
-    >
+    <Text style={{ color: colors.moreInfo, marginTop: 5 }} onPress={handlePress}>
       less
     </Text>
   );
@@ -26,25 +23,25 @@ const _renderRevealedFooter = handlePress => {
 export default function HeaderCard(props) {
   const styles = StyleSheet.create({
     container: {
-      display: "flex",
-      marginVertical: 10
+      display: 'flex',
+      marginVertical: 10,
     },
     topContainer: {
-      flexDirection: props.headerType == "vertical" ? "column" : "row",
-      alignItems: "center"
+      flexDirection: props.headerType == 'vertical' ? 'column' : 'row',
+      alignItems: 'center',
     },
     title: {
-      fontWeight: "600",
+      fontWeight: '600',
       marginTop: 5,
-      fontSize: props.headerType == "vertical" ? 17 : 15
-    }
+      fontSize: props.headerType == 'vertical' ? 17 : 15,
+    },
   });
 
   return (
     <View style={{ ...styles.container, ...props.containerStyle }}>
       <View style={styles.topContainer}>
         {props.url && <AsyncImage {...props} />}
-        {(props.headerType !== "vertical" || props.showTitle) && (
+        {(props.headerType !== 'vertical' || props.showTitle) && (
           <Text style={styles.title}>{props.title}</Text>
         )}
       </View>

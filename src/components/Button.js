@@ -1,17 +1,19 @@
-import React from "react";
-import { StyleSheet } from "react-native";
-import styled from "styled-components/native";
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import styled from 'styled-components/native';
 
-import Layout from "../styles/Layout";
-import { colors } from "../styles/common.style";
+import Layout from '../styles/Layout';
+import { colors } from '../styles/common.style';
 
 const ButtonContainer = styled.TouchableOpacity`
   background-color: ${props => {
     if (props.primary) {
       return colors.buttons.blue;
-    } else if (props.danger) {
+    }
+    if (props.danger) {
       return colors.buttons.red;
-    } else if (props.light) {
+    }
+    if (props.light) {
       return colors.buttons.light;
     }
     return colors.buttons.blue;
@@ -29,14 +31,15 @@ const StyledText = styled.Text`
   font-weight: 600;
   text-transform: ${props => {
     if (props.capitalize) {
-      return "capitalize";
+      return 'capitalize';
     }
-    return "none";
+    return 'none';
   }};
   font-size: ${props => {
     if (props.large) {
       return 16;
-    } else if (props.small) {
+    }
+    if (props.small) {
       return 10;
     }
     return 14;
@@ -55,7 +58,7 @@ export default function Button(props) {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-    width: "100%",
-    borderRadius: Layout.container.borderRadius
-  }
+    width: '100%',
+    borderRadius: Layout.container.borderRadius,
+  },
 });

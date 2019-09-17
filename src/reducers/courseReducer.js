@@ -1,12 +1,12 @@
-import { courseConstants } from "../constants";
+import { courseConstants } from '../constants';
 
 export default function reducer(
   state = {
     selectedCourse: undefined,
     fetchingStats: true,
-    fetchingComments: true,
+    fetchingComments: false,
     stats: [],
-    comments: []
+    comments: [],
   },
   action
 ) {
@@ -26,21 +26,16 @@ export default function reducer(
     case courseConstants.COURSE_POST_STAT: {
       const { payload: item } = action;
       const prevStats = { ...state.stats };
-      const stat = Object.keys(prevStats).find(
-        key => prevStats[key].meta.repr === item.voteType
-      );
+      const stat = Object.keys(prevStats).find(key => prevStats[key].meta.repr === item.voteType);
       prevStats[stat].value =
-        (prevStats[stat].value * prevStats[stat].votes + item.value) /
-        (prevStats[stat].votes + 1);
+        (prevStats[stat].value * prevStats[stat].votes + item.value) / (prevStats[stat].votes + 1);
       prevStats[stat].votes += 1;
       return { ...state, stats: prevStats };
     }
     case courseConstants.COURSE_REMOVE_STAT: {
       const { payload: item } = action;
       const prevStats = { ...state.stats };
-      const stat = Object.keys(prevStats).find(
-        key => prevStats[key].meta.repr === item.voteType
-      );
+      const stat = Object.keys(prevStats).find(key => prevStats[key].meta.repr === item.voteType);
       prevStats[stat].value =
         prevStats[stat].votes - 1 === 0
           ? 0
@@ -59,7 +54,24 @@ export default function reducer(
       return {
         ...state,
         fetchingComments: false,
-        fetchingCommentsError: action.payload
+        fetchingCommentsError: action.payload,
+      };
+    }
+    case courseConstants.COURSE_POST_COMMENT: {
+      return { ...state, postingComment: true };
+    }
+    case courseConstants.COURSE_POST_COMMENT_FULFILLED: {
+      return {
+        ...state,
+        postingComment: false,
+        comments: [{ ...action.payload, animate: true }, ...state.comments],
+      };
+    }
+    case courseConstants.COURSE_POST_COMMENT_REJECTED: {
+      return {
+        ...state,
+        postingComment: false,
+        errorPostingComment: action.payload,
       };
     }
     default:

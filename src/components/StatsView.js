@@ -1,9 +1,9 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 
-import StatCard from "./StatCard";
-import { cardType } from "../constants/enums";
-import Layout from "../styles/Layout";
+import StatCard from './StatCard';
+import { cardType } from '../constants/enums';
+import Layout from '../styles/Layout';
 
 export default class StatsView extends React.Component {
   constructor(props) {
@@ -16,8 +16,7 @@ export default class StatsView extends React.Component {
       <View style={[style]}>
         {Object.entries(stats).map(([key, value]) => {
           const voted = votes.find(
-            x =>
-              x.voteType === value.meta.repr && parent.id === x.info.foreign_key
+            x => x.voteType === value.meta.repr && parent.id === x.info.foreign_key
           );
           const stat = { title: value.voteType, ...value, voted };
           return (
@@ -37,6 +36,6 @@ export default class StatsView extends React.Component {
 
 const styles = StyleSheet.create({
   statCard: {
-    marginTop: Layout.container.margin * 1.5
-  }
+    marginTop: Layout.container.margin * 1.5,
+  },
 });

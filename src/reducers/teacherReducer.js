@@ -1,13 +1,13 @@
-import { teacherConstants } from "../constants";
+import { teacherConstants } from '../constants';
 
 // TODO: create a fetching or loading reducer...
 export default function reducer(
   state = {
     selectedTeacher: undefined,
     fetchingStats: true,
-    fetchingComments: true,
+    fetchingComments: false,
     stats: [],
-    comments: []
+    comments: [],
   },
   action
 ) {
@@ -27,21 +27,16 @@ export default function reducer(
     case teacherConstants.TEACHER_POST_STAT: {
       const { payload: item } = action;
       const prevStats = { ...state.stats };
-      const stat = Object.keys(prevStats).find(
-        key => prevStats[key].meta.repr === item.voteType
-      );
+      const stat = Object.keys(prevStats).find(key => prevStats[key].meta.repr === item.voteType);
       prevStats[stat].value =
-        (prevStats[stat].value * prevStats[stat].votes + item.value) /
-        (prevStats[stat].votes + 1);
+        (prevStats[stat].value * prevStats[stat].votes + item.value) / (prevStats[stat].votes + 1);
       prevStats[stat].votes += 1;
       return { ...state, stats: prevStats };
     }
     case teacherConstants.TEACHER_REMOVE_STAT: {
       const { payload: item } = action;
       const prevStats = { ...state.stats };
-      const stat = Object.keys(prevStats).find(
-        key => prevStats[key].meta.repr === item.voteType
-      );
+      const stat = Object.keys(prevStats).find(key => prevStats[key].meta.repr === item.voteType);
       prevStats[stat].value =
         prevStats[stat].votes - 1 === 0
           ? 0
@@ -63,21 +58,21 @@ export default function reducer(
       return {
         ...state,
         postingComment: false,
-        comments: [{ ...action.payload, animate: true }, ...state.comments]
+        comments: [{ ...action.payload, animate: true }, ...state.comments],
       };
     }
     case teacherConstants.TEACHER_POST_COMMENT_REJECTED: {
       return {
         ...state,
         postingComment: false,
-        errorPostingComment: action.payload
+        errorPostingComment: action.payload,
       };
     }
     case teacherConstants.TEACHER_GET_COMMENTS_REJECTED: {
       return {
         ...state,
         fetchingComments: false,
-        fetchingCommentsError: action.payload
+        fetchingCommentsError: action.payload,
       };
     }
     default:

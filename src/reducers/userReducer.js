@@ -1,10 +1,10 @@
-import { userConstants } from "../constants";
+import { userConstants } from '../constants';
 
 const initialState = {
   votes: undefined,
   fetchingVotes: false,
   errorFetchingVotes: false,
-  errorSendingStat: false
+  errorSendingStat: false,
 };
 
 export default function reducer(state = initialState, action) {
@@ -16,7 +16,7 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         fetchingVotes: true,
-        errorFetchingVotes: action.payload
+        errorFetchingVotes: action.payload,
       };
     }
     case userConstants.USER_GET_VOTES_FULFILLED: {
@@ -44,10 +44,7 @@ export default function reducer(state = initialState, action) {
       const prevVotes = state.votes;
       const { payload } = action;
       const newVotes = prevVotes.filter(
-        v =>
-          !(
-            v.voteType === payload.voteType && v.teacherId === payload.teacherId
-          )
+        v => !(v.voteType === payload.voteType && v.teacherId === payload.teacherId)
       );
       return { ...state, removingStat: false, votes: newVotes };
     }
@@ -55,7 +52,7 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         removingStat: false,
-        errorRemovingStat: action.payload
+        errorRemovingStat: action.payload,
       };
     }
     default:

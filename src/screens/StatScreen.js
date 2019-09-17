@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   FlatList,
   TouchableWithoutFeedback,
@@ -6,51 +6,50 @@ import {
   StyleSheet,
   View,
   Text,
-  ScrollView
-} from "react-native";
-import { Transition } from "react-navigation-fluid-transitions";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { SafeAreaView } from "react-navigation";
-import AnimatedEllipsis from "react-native-animated-ellipsis";
-import statsService from "../services/stats";
-import { BlurView } from "@react-native-community/blur";
-import { colors } from "../styles/common.style";
-import Layout from "../styles/Layout";
-import { teacherSet } from "../actions/teacherActions";
+  ScrollView,
+} from 'react-native';
+import { Transition } from 'react-navigation-fluid-transitions';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { SafeAreaView } from 'react-navigation';
+import { BlurView } from '@react-native-community/blur';
+import statsService from '../services/stats';
+import { colors } from '../styles/common.style';
+import Layout from '../styles/Layout';
+import { teacherSet } from '../actions/teacherActions';
 
-import StatView from "../components/StatView";
-import AsyncImage from "../components/AsyncImage";
+import StatView from '../components/StatView';
+import AsyncImage from '../components/AsyncImage';
 
 class StatScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       fetchingRankedStats: true,
-      rankedStats: []
+      rankedStats: [],
     };
     this._onPress = this._onPress.bind(this);
   }
 
   async componentDidMount() {
-    StatusBar.setHidden(true, "slide");
+    StatusBar.setHidden(true, 'slide');
     const { navigation } = this.props;
-    const stat = navigation.getParam("stat");
+    const stat = navigation.getParam('stat');
     const { url } = stat;
     const rankedStats = await statsService.getStat(url);
     this.setState(prev => ({
       fetchingRankedStats: !prev.fetchingRankedStats,
-      rankedStats
+      rankedStats,
     }));
   }
 
   componentWillUnmount() {
-    StatusBar.setHidden(false, "slide");
+    StatusBar.setHidden(false, 'slide');
   }
 
   _onPress(item) {
     this.props.dispatch(teacherSet(item));
-    this.props.navigation.navigate("Teacher");
+    this.props.navigation.navigate('Teacher');
   }
 
   _renderItem = ({ item, index }) => {
@@ -63,19 +62,19 @@ class StatScreen extends Component {
     <View
       style={{
         height: 1,
-        width: "100%",
-        backgroundColor: colors.lightgray
+        width: '100%',
+        backgroundColor: colors.lightgray,
       }}
     />
   );
 
   render() {
     const { navigation } = this.props;
-    const stat = navigation.getParam("stat");
+    const stat = navigation.getParam('stat');
     const { image, title, subtitle, id, description } = stat;
     const { fetchingRankedStats, rankedStats } = this.state;
     return (
-      <SafeAreaView style={styles.container} forceInset={{ top: "never" }}>
+      <SafeAreaView style={styles.container} forceInset={{ top: 'never' }}>
         <ScrollView bounces={false}>
           <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
             <View style={{ flex: 1 }}>
@@ -84,33 +83,33 @@ class StatScreen extends Component {
                   {image && <AsyncImage style={styles.image} url={image} />}
                   <View
                     style={{
-                      position: "absolute",
+                      position: 'absolute',
                       left: 0,
                       right: 0,
                       bottom: 0,
-                      zIndex: 1001
+                      zIndex: 1001,
                     }}
                   >
                     <BlurView
                       blurType="light"
                       blurAmount={50}
                       style={{
-                        position: "absolute",
+                        position: 'absolute',
                         left: 0,
                         right: 0,
                         bottom: 0,
-                        top: 0
+                        top: 0,
                       }}
                     />
                     <Text
                       style={{
                         paddingHorizontal: 20,
                         paddingTop: 20,
-                        fontWeight: "700",
+                        fontWeight: '700',
                         fontSize: 14,
                         zIndex: 1,
-                        color: "gray",
-                        textTransform: "uppercase"
+                        color: 'gray',
+                        textTransform: 'uppercase',
                       }}
                     >
                       {title}
@@ -119,8 +118,8 @@ class StatScreen extends Component {
                       style={{
                         paddingHorizontal: 20,
                         paddingBottom: 20,
-                        fontWeight: "700",
-                        fontSize: 22
+                        fontWeight: '700',
+                        fontSize: 22,
                       }}
                     >
                       {subtitle}
@@ -132,20 +131,18 @@ class StatScreen extends Component {
                 <View
                   style={{
                     flex: 1,
-                    backgroundColor: "white"
+                    backgroundColor: 'white',
                   }}
                 >
-                  {!fetchingRankedStats && (
-                    <Text style={styles.description}>{description}</Text>
-                  )}
+                  {!fetchingRankedStats && <Text style={styles.description}>{description}</Text>}
                   {fetchingRankedStats ? (
                     <Text
                       style={{
                         marginHorizontal: Layout.container.margin,
-                        padding: 20
+                        padding: 20,
                       }}
                     >
-                      Loading <AnimatedEllipsis />
+                      Loading...
                     </Text>
                   ) : (
                     <FlatList
@@ -167,19 +164,19 @@ class StatScreen extends Component {
 }
 
 StatScreen.propTypes = {
-  url: PropTypes.string
+  url: PropTypes.string,
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   image: { flex: 1 },
   description: {
     fontSize: 18,
-    color: "gray",
-    padding: 20
-  }
+    color: 'gray',
+    padding: 20,
+  },
 });
 
 export default connect()(StatScreen);

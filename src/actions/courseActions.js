@@ -1,25 +1,35 @@
-import { courseConstants } from "../constants";
-import courseService from "../services/course";
+import { courseConstants } from '../constants';
+import courseService from '../services/course';
 
 export const courseSet = course => ({
   type: courseConstants.COURSE_SET,
-  payload: course
+  payload: course,
 });
 
-const request = ({ teacherId }, constant) => ({
+const request = ({ courseId }, constant) => ({
   type: constant,
-  teacherId
+  courseId,
 });
 
 const success = (res, constant) => ({
   type: constant,
-  payload: res
+  payload: res,
 });
 
 const reject = (e, constant) => ({
   type: constant,
-  payload: e
+  payload: e,
 });
+
+export const postCourseComment = data => async dispatch => {
+  dispatch(request(data, courseConstants.COURSE_POST_COMMENT));
+  try {
+    const res = await courseService.postComment(data);
+    dispatch(success(res, courseConstants.COURSE_POST_COMMENT_FULFILLED));
+  } catch (e) {
+    dispatch(reject(e, courseConstants.COURSE_POST_COMMENT_REJECTED));
+  }
+};
 
 export const fetchCourseStats = data => async dispatch => {
   dispatch(request(data, courseConstants.COURSE_STATS_REQUEST));
@@ -46,9 +56,7 @@ export const courseSendStat = data => async dispatch => {
   dispatch(
     success(
       data,
-      action === "vote"
-        ? courseConstants.COURSE_POST_STAT
-        : courseConstants.COURSE_REMOVE_STAT
+      action === 'vote' ? courseConstants.COURSE_POST_STAT : courseConstants.COURSE_REMOVE_STAT
     )
   );
 };

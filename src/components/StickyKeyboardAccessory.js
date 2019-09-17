@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import { TextInput, View } from "react-native";
-import PropTypes from "prop-types";
-import { BORDER_RADIUS } from "../styles/common.style";
-import Button from "./Button";
-import Layout from "../styles/Layout";
+import React, { Component } from 'react';
+import { TextInput, View } from 'react-native';
+import PropTypes from 'prop-types';
+import { BORDER_RADIUS } from '../styles/common.style';
+import Button from './Button';
+import Layout from '../styles/Layout';
 
 class StickyKeyboardAccessory extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      text: ""
+      text: '',
     };
     this._onPressSend = this._onPressSend.bind(this);
   }
@@ -17,25 +17,25 @@ class StickyKeyboardAccessory extends Component {
   _onPressSend = () => {
     const { text } = this.state;
     this.props.onPressSend(text);
-    this.setState({ text: "" });
+    this.setState({ text: '' });
   };
 
   render() {
     return (
       <View
         style={{
-          backgroundColor: "white",
-          display: "flex",
-          alignItems: "center",
-          flexDirection: "row",
+          backgroundColor: 'white',
+          display: 'flex',
+          alignItems: 'center',
+          flexDirection: 'row',
           margin: Layout.container.margin / 2,
-          padding: Layout.container.margin / 2
+          padding: Layout.container.margin / 2,
         }}
       >
         <TextInput
           style={{
             flex: 1,
-            fontSize: 16
+            fontSize: 16,
           }}
           value={this.state.text}
           multiline
@@ -56,7 +56,7 @@ class StickyKeyboardAccessory extends Component {
 }
 
 StickyKeyboardAccessory.propTypes = {
-  onPressSend: PropTypes.func.isRequired
+  onPressSend: PropTypes.func.isRequired,
 };
 
 export default StickyKeyboardAccessory;

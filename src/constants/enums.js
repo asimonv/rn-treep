@@ -1,4 +1,4 @@
 export const cardType = {
-    DEFAULT: 'default',
-    PRIMARY: 'primary',
-}
+  DEFAULT: 'default',
+  PRIMARY: 'primary',
+};

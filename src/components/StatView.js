@@ -1,5 +1,5 @@
-import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const StatView = ({ item, onPress, index }) => {
   return (
@@ -16,20 +16,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingVertical: 10
+    paddingVertical: 10,
   },
   title: {
-    fontSize: 18
+    fontSize: 18,
   },
   index: {
-    fontSize: 35
+    fontSize: 35,
   },
   layout: {
-    display: "flex",
-    flexDirection: "row",
+    display: 'flex',
+    flexDirection: 'row',
     flex: 1,
-    alignItems: "center"
-  }
+    alignItems: 'center',
+  },
 });
 
 export default StatView;
