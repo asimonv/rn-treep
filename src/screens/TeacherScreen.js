@@ -137,14 +137,6 @@ export class TeacherScreen extends React.Component {
               style={{ marginHorizontal: Layout.container.margin }}
             />
           )}
-          <View
-            style={{
-              marginHorizontal: Layout.container.margin,
-              marginVertical: Layout.container.margin * 2,
-            }}
-          >
-            <Button onPress={this._onPressComments} light large title="See all comments" />
-          </View>
         </ScrollView>
         {selectedStat && (
           <StatModal

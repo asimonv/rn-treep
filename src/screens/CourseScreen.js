@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import StatModal from '../components/StatModal';
 import StatsView from '../components/StatsView';
 import HeaderCard from '../components/HeaderCard';
-import Button from '../components/Button';
 import Layout from '../styles/Layout';
 import { votesOptions } from '../data/courseOptions';
 import { fetchCourseStats, courseSendStat } from '../actions/courseActions';
@@ -124,14 +123,6 @@ export class CourseScreen extends React.Component {
               style={{ marginHorizontal: Layout.container.margin }}
             />
           )}
-          <View
-            style={{
-              marginHorizontal: Layout.container.margin,
-              marginVertical: Layout.container.margin * 2,
-            }}
-          >
-            <Button onPress={this._onPressComments} light large title="See all comments" />
-          </View>
         </ScrollView>
         {selectedStat && (
           <StatModal
