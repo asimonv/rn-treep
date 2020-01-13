@@ -10,8 +10,14 @@ const size = 30;
 const AnimatedView = animated(View);
 
 export default function ListItem(props) {
-  const { item } = props;
-  const { animate } = item;
+  const {
+    item: { title, disabled, icon, description, animate, color },
+    showChevron,
+    showOptions,
+    onPress,
+    onPressOptions,
+    item,
+  } = props;
 
   const fading = useSpring({
     config: { duration: 1500 },
@@ -19,29 +25,46 @@ export default function ListItem(props) {
     from: { backgroundColor: 'white' },
   });
 
+  const handleOnPress = x => {
+    if (onPress) {
+      onPress(x);
+    }
+  };
+
+  const handleOnPressOptions = x => {
+    if (onPressOptions) {
+      onPressOptions(x);
+    }
+  };
+
   return (
-    <TouchableOpacity
-      style={styles.button}
-      disabled={item.disabled}
-      onPress={e => props.onPress(e, props)}
-    >
+    <TouchableOpacity style={styles.button} disabled={disabled} onPress={() => handleOnPress(item)}>
       <AnimatedView
         style={[
           { flex: 1, flexDirection: 'row', alignItems: 'center', padding: 10 },
           animate ? { ...fading } : {},
         ]}
       >
-        {item.icon && (
-          <View style={[styles.iconWrapper, { backgroundColor: item.color || 'white' }]}>
-            <Icon style={styles.icon} size={size - 10} name={item.icon} />
+        {icon && (
+          <View style={[styles.iconWrapper, { backgroundColor: color || 'white' }]}>
+            <Icon style={styles.icon} size={size - 10} name={icon} />
           </View>
         )}
         <View style={{ flex: 1, flexDirection: 'column' }}>
-          <Text style={styles.title}>{item.title}</Text>
-          {item.description && <Text style={styles.subtitle}>{item.description}</Text>}
+          <Text style={styles.title}>{title}</Text>
+          {description && <Text style={styles.subtitle}>{description}</Text>}
         </View>
-        {props.showChevron && (
+        {showChevron && (
           <Icon style={styles.chevron} name="angle-right" size={24} color={colors.lightgray} />
+        )}
+        {showOptions && (
+          <Icon
+            onPress={() => handleOnPressOptions(item)}
+            style={styles.chevron}
+            name="ellipsis-h"
+            size={24}
+            color={colors.lightgray}
+          />
         )}
       </AnimatedView>
     </TouchableOpacity>
@@ -50,12 +73,16 @@ export default function ListItem(props) {
 
 ListItem.defaultProps = {
   onPress: undefined,
+  onPressOptions: undefined,
   showChevron: undefined,
+  showOptions: false,
 };
 
 ListItem.propTypes = {
   onPress: PropTypes.func,
   showChevron: PropTypes.bool,
+  showOptions: PropTypes.bool,
+  onPressOptions: PropTypes.func,
 };
 
 const styles = StyleSheet.create({
@@ -66,6 +93,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 14,
+    marginTop: 8,
     color: colors.gray,
   },
   title: {

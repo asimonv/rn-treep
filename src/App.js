@@ -8,6 +8,7 @@
 
 import React from 'react';
 import { ActivityIndicator, Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 
 import { InAppNotificationProvider } from 'react-native-in-app-notification';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -17,16 +18,18 @@ import Store from './store';
 import AppNavigator from './navigation/AppNavigator';
 
 const App = () => (
-  <View style={styles.container}>
-    {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-    <Provider store={Store.store}>
-      <PersistGate loading={<ActivityIndicator />} persistor={Store.persistor}>
-        <InAppNotificationProvider>
-          <AppNavigator />
-        </InAppNotificationProvider>
-      </PersistGate>
-    </Provider>
-  </View>
+  <ActionSheetProvider>
+    <View style={styles.container}>
+      {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+      <Provider store={Store.store}>
+        <PersistGate loading={<ActivityIndicator />} persistor={Store.persistor}>
+          <InAppNotificationProvider>
+            <AppNavigator />
+          </InAppNotificationProvider>
+        </PersistGate>
+      </Provider>
+    </View>
+  </ActionSheetProvider>
 );
 
 export default App;

@@ -1,11 +1,15 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { FlatList, RefreshControl, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-keyboard-accessory';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Dialog from 'react-native-dialog';
+import { connectActionSheet } from '@expo/react-native-action-sheet';
 
 import ListItem from '../components/ListItem';
 import StickyKeyboardAccessory from '../components/StickyKeyboardAccessory';
+import StyledTextInput from '../components/StyledTextInput';
 import Message from '../components/Message';
 import { fetchTeacherComments, postComment } from '../actions/teacherActions';
 import { fetchCourseComments, postCourseComment } from '../actions/courseActions';
@@ -19,6 +23,14 @@ class CommentsScreen extends React.Component {
   static navigationOptions = {
     title: 'Comments',
   };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      dialogVisible: false,
+      currentComment: null,
+    };
+  }
 
   componentDidMount() {
     const { dispatch, navigation } = this.props;
@@ -44,7 +56,7 @@ class CommentsScreen extends React.Component {
   _renderItem = ({ item }) => {
     const { text, userId, animate } = item;
     const comment = { description: text, title: userId, animate };
-    return <ListItem onPress={this._onPress} item={comment} />;
+    return <ListItem onPressOptions={this._onPress} item={comment} showOptions />;
   };
 
   _renderSeparator = () => (
@@ -61,8 +73,36 @@ class CommentsScreen extends React.Component {
 
   _keyExtractor = item => `${item.id}`;
 
-  _onPress = (e, item) => {
-    console.log(item);
+  showDialog = item => {
+    this.setState({ dialogVisible: true, currentComment: item });
+  };
+
+  handleCancel = () => {
+    this.setState({ dialogVisible: false });
+  };
+
+  handleReport = () => {
+    this.setState({ dialogVisible: false });
+  };
+
+  _onPress = item => {
+    const options = ['Report ✋', 'Cancel'];
+    const cancelButtonIndex = options.length - 1;
+    const { showActionSheetWithOptions } = this.props;
+
+    showActionSheetWithOptions(
+      {
+        options,
+        cancelButtonIndex,
+        title: 'Comment',
+      },
+      async buttonIndex => {
+        // Do something here depending on the button index selected
+        if (buttonIndex === 0) {
+          this.showDialog(item);
+        }
+      }
+    );
   };
 
   _onPressSend = text => {
@@ -113,6 +153,7 @@ class CommentsScreen extends React.Component {
   render() {
     const { teacher, course, navigation } = this.props;
     const commentType = navigation.getParam('commentEntity');
+    const { dialogVisible, currentComment } = this.state;
     return (
       <SafeAreaView style={styles.container}>
         <KeyboardAwareScrollView>
@@ -142,6 +183,15 @@ class CommentsScreen extends React.Component {
         <KeyboardAccessoryView inSafeAreaView alwaysVisible style={{ backgroundColor: 'white' }}>
           <StickyKeyboardAccessory onPressSend={this._onPressSend} />
         </KeyboardAccessoryView>
+        <Dialog.Container visible={dialogVisible}>
+          <Dialog.Title>Report Comment</Dialog.Title>
+          {currentComment && (
+            <Dialog.Description>{`You are reporting a comment: ${currentComment.description}`}</Dialog.Description>
+          )}
+          <StyledTextInput multiline placeholder="Why?" />
+          <Dialog.Button label="Cancel" onPress={this.handleCancel} />
+          <Dialog.Button label="Report" onPress={this.handleReport} />
+        </Dialog.Container>
       </SafeAreaView>
     );
   }
@@ -161,4 +211,4 @@ const mapStateToProps = state => ({
   course: state.course,
 });
 
-export default connect(mapStateToProps)(CommentsScreen);
+export default connectActionSheet(connect(mapStateToProps)(CommentsScreen));
