@@ -1,11 +1,21 @@
-import React from 'react';
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
-import { connect } from 'react-redux';
-import t from 'tcomb-form-native';
-import { signIn } from '../actions/authActions';
-import Button from '../components/Button';
-import Loader from '../components/Loader';
+import React from "react";
+import {
+  Keyboard,
+  Platform,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Image,
+} from "react-native";
+import AsyncStorage from "@react-native-community/async-storage";
+import { connect } from "react-redux";
+import t from "tcomb-form-native";
+import { signIn } from "../actions/authActions";
+import Button from "../components/Button";
+import Loader from "../components/Loader";
 
 const { Form } = t.form;
 
@@ -17,13 +27,13 @@ const User = t.struct({
 const options = {
   fields: {
     username: {
-      error: 'You forgot your UC username',
-      help: 'Please use your UC username (without @uc.cl)',
-      autoCapitalize: 'none',
+      error: "You forgot your UC username",
+      help: "Please use your UC username (without @uc.cl)",
+      autoCapitalize: "none",
     },
     password: {
-      error: 'Please add your password',
-      help: 'Your UC Login password. Do not worry, Treep does not save it',
+      error: "Please add your password",
+      help: "Your UC Login password. Don't worry, Treep doesn't save it 🔑",
       secureTextEntry: true,
       password: true,
     },
@@ -32,7 +42,7 @@ const options = {
 
 export class SignInScreen extends React.Component {
   static navigationOptions = {
-    title: 'Sign in',
+    header: null,
   };
 
   constructor(props) {
@@ -48,17 +58,44 @@ export class SignInScreen extends React.Component {
     const { loadingUser, error } = auth;
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.container}>
-          <Form
-            type={User}
-            ref={c => (this._form = c)} // assign a ref
-            options={options}
-            value={this.state}
-          />
-          <Button disabled={loadingUser} title="Sign in" onPress={this._signInAsync} />
-          {loadingUser && <Loader loading={loadingUser} title="Logging you in..." />}
-          {error && <Text style={styles.message}>{error}</Text>}
-        </View>
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={styles.inner}>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                }}
+              >
+                <Image
+                  style={styles.iconImage}
+                  source={require("../assets/images/icon.png")}
+                />
+              </View>
+
+              <Form
+                type={User}
+                ref={c => (this._form = c)} // assign a ref
+                options={options}
+                value={this.state}
+              />
+              <Button
+                style={{ marginBottom: 50 }}
+                disabled={loadingUser}
+                title="Sign in"
+                onPress={this._signInAsync}
+              />
+              {loadingUser && (
+                <Loader loading={loadingUser} title="Signing you in..." />
+              )}
+              {error && <Text style={styles.message}>{error}</Text>}
+            </View>
+          </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
       </SafeAreaView>
     );
   }
@@ -74,8 +111,8 @@ export class SignInScreen extends React.Component {
       const {
         navigation: { navigate },
       } = this.props;
-      await AsyncStorage.setItem('user', this.props.auth.user);
-      navigate('App');
+      await AsyncStorage.setItem("user", this.props.auth.user);
+      navigate("App");
     }
   }
 
@@ -96,8 +133,9 @@ export default connect(mapStateToProps)(SignInScreen);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
   },
+  iconImage: { width: 60, height: 60, borderRadius: 5 },
+  inner: { padding: 24, flex: 1, justifyContent: "space-around" },
   message: {
     marginTop: 5,
   },

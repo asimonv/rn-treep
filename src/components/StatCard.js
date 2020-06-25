@@ -1,24 +1,24 @@
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import _ from 'lodash';
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import _ from "lodash";
 
-import LinearGradient from 'react-native-linear-gradient';
-import { cardType } from '../constants/enums';
-import { BORDER_RADIUS } from '../styles/common.style';
-import Layout from '../styles/Layout';
-import ShadowView from './ShadowView';
+import LinearGradient from "react-native-linear-gradient";
+import { cardType } from "../constants/enums";
+import { BORDER_RADIUS } from "../styles/common.style";
+import Layout from "../styles/Layout";
+import ShadowView from "./ShadowView";
 
 export default function StatCard(props) {
   let colors;
   const { stat, onPress, style, cardType: type } = props;
   switch (type) {
     case cardType.PRIMARY:
-      colors = ['#37A6FA', '#0058E6'];
+      colors = ["#37A6FA", "#0058E6"];
       break;
     default:
-      colors = ['#03C9A9', '#01AF95'];
+      colors = ["#03C9A9", "#01AF95"];
   }
-  const votesMessage = stat.votes === 1 ? 'vote' : 'votes';
+  const votesMessage = stat.votes === 1 ? "vote" : "votes";
   return (
     <TouchableOpacity onPress={() => onPress(stat)}>
       <ShadowView>
@@ -26,17 +26,17 @@ export default function StatCard(props) {
           <View
             style={{
               flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
+              flexDirection: "row",
+              justifyContent: "space-between",
             }}
           >
-            <View style={{ flexDirection: 'column' }}>
+            <View style={{ flexDirection: "column" }}>
               <Text style={styles.statTitle}>{_.capitalize(stat.title)}</Text>
               {stat.voted && (
                 <View
                   style={{
-                    flexDirection: 'row',
-                    alignSelf: 'flex-start',
+                    flexDirection: "row",
+                    alignSelf: "flex-start",
                     ...styles.label,
                     marginTop: 3,
                   }}
@@ -45,9 +45,9 @@ export default function StatCard(props) {
                 </View>
               )}
             </View>
-            <View style={{ flexDirection: 'column' }}>
+            <View style={{ flexDirection: "column" }}>
               <Text style={styles.statValue}>{stat.value}</Text>
-              <Text style={{ ...styles.subtitle, textAlign: 'right' }}>
+              <Text style={{ ...styles.subtitle, textAlign: "right" }}>
                 {stat.votes} {votesMessage}
               </Text>
             </View>
@@ -61,33 +61,33 @@ export default function StatCard(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'blue',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    backgroundColor: "blue",
+    flexDirection: "row",
+    justifyContent: "space-between",
     paddingHorizontal: Layout.container.margin * 1.5,
-    paddingVertical: Layout.container.margin / 2,
-    alignItems: 'center',
-    borderRadius: BORDER_RADIUS,
+    paddingVertical: Layout.container.margin / 1.5,
+    alignItems: "center",
+    borderRadius: BORDER_RADIUS * 2,
   },
   statTitle: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginTop: 5,
   },
   statValue: {
-    color: 'white',
+    color: "white",
     fontSize: 40,
-    textAlign: 'right',
+    textAlign: "right",
   },
   subtitle: {
-    color: 'white',
-    fontWeight: '600',
+    color: "white",
+    fontWeight: "600",
   },
   label: {
     paddingHorizontal: 5,
     paddingVertical: 2.5,
-    backgroundColor: 'rgba(52, 52, 52, 0.2)',
-    borderRadius: 5,
+    backgroundColor: "rgba(52, 52, 52, 0.2)",
+    borderRadius: 10,
   },
 });

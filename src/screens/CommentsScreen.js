@@ -186,7 +186,7 @@ class CommentsScreen extends React.Component {
         <Dialog.Container visible={dialogVisible}>
           <Dialog.Title>Report Comment</Dialog.Title>
           {currentComment && (
-            <Dialog.Description>{`You are reporting a comment: ${currentComment.description}`}</Dialog.Description>
+            <Dialog.Description>{`You are reporting a comment: "${currentComment.description}"`}</Dialog.Description>
           )}
           <StyledTextInput multiline placeholder="Why?" />
           <Dialog.Button label="Cancel" onPress={this.handleCancel} />

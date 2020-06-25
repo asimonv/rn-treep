@@ -1,9 +1,9 @@
-import React from 'react';
-import styled from 'styled-components/native';
-import { Text } from 'react-native';
-import PropTypes from 'prop-types';
-import Layout from '../styles/Layout';
-import { colors, BORDER_RADIUS } from '../styles/common.style';
+import React from "react";
+import styled from "styled-components/native";
+import { Text } from "react-native";
+import PropTypes from "prop-types";
+import Layout from "../styles/Layout";
+import { colors, BORDER_RADIUS } from "../styles/common.style";
 
 const MessageContainer = styled.View`
   background-color: ${props => {
@@ -18,16 +18,21 @@ const MessageContainer = styled.View`
     }
     return colors.white;
   }};
-  padding: ${Layout.container.margin * 1.5}px ${Layout.container.margin * 2}px;
-  margin: ${props => (props.style ? props.style.margin : undefined) || Layout.container.margin}px;
-  border-radius: ${BORDER_RADIUS * 3};
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+  padding: ${Layout.container.margin * 2.5}px ${Layout.container.margin * 2}px;
+  margin: ${props =>
+    (props.style ? props.style.margin : undefined) ||
+    Layout.container.margin}px;
+  border-radius: ${BORDER_RADIUS * 6};
+  border: 1px solid ${colors.lightgray};
+  box-shadow: 0px 1px 3px rgba(127, 140, 141, 0.1);
 `;
 
 const Message = ({ title, style }) => {
   return (
     <MessageContainer style={style}>
-      <Text style={{ fontWeight: '600', color: colors.gray, fontSize: 16 }}>{title}</Text>
+      <Text style={{ fontWeight: "600", color: colors.gray, fontSize: 16 }}>
+        {title}
+      </Text>
     </MessageContainer>
   );
 };

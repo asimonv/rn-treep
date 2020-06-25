@@ -1,24 +1,31 @@
-import React from 'react';
-import { RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import {
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  ActivityIndicator,
+} from "react-native";
 
-import { connect } from 'react-redux';
-import { withInAppNotification } from 'react-native-in-app-notification';
+import { connect } from "react-redux";
+import { withInAppNotification } from "react-native-in-app-notification";
 
-import HeaderCard from '../components/HeaderCard';
-import StatModal from '../components/StatModal';
-import StatsView from '../components/StatsView';
-import Button from '../components/Button';
-import Layout from '../styles/Layout';
+import HeaderCard from "../components/HeaderCard";
+import StatModal from "../components/StatModal";
+import StatsView from "../components/StatsView";
+import Button from "../components/Button";
+import Layout from "../styles/Layout";
 
-import { fetchTeachersStats, teacherSendStat } from '../actions/teacherActions';
-import { sendStat } from '../actions/userActions';
+import { fetchTeachersStats, teacherSendStat } from "../actions/teacherActions";
+import { sendStat } from "../actions/userActions";
 
-import { votesOptions } from '../data/teacherOptions';
-import checkIfVoted from '../helpers/votes';
+import { votesOptions } from "../data/teacherOptions";
+import checkIfVoted from "../helpers/votes";
 
 export class TeacherScreen extends React.Component {
   static navigationOptions = {
-    title: 'Teacher',
+    title: "Teacher",
   };
 
   constructor(props) {
@@ -89,19 +96,17 @@ export class TeacherScreen extends React.Component {
     dispatch(sendStat(data));
     dispatch(teacherSendStat(data));
     this.refs.modal.closeModal();
-    /* showNotification({
+    showNotification({
       title: "Thank you!",
       message: "Your opinion is very important to others",
-      onPress: () => Alert.alert("Alert", "You clicked the notification!")
     });
-    */
   }
 
   _onPressComments() {
     const {
       navigation: { navigate },
     } = this.props;
-    navigate('Comments', { commentEntity: 'teacher' });
+    navigate("Comments", { commentEntity: "teacher" });
   }
 
   render() {
@@ -112,7 +117,10 @@ export class TeacherScreen extends React.Component {
         <ScrollView
           style={styles.container}
           refreshControl={
-            <RefreshControl refreshing={teacher.fetchingStats} onRefresh={this._onRefresh} />
+            <RefreshControl
+              refreshing={teacher.fetchingStats}
+              onRefresh={this._onRefresh}
+            />
           }
         >
           <HeaderCard
@@ -126,9 +134,7 @@ export class TeacherScreen extends React.Component {
             }}
             headerType="vertical"
           />
-          {teacher.fetchingStats ? (
-            <Text style={{ marginHorizontal: Layout.container.margin }}>Loading...</Text>
-          ) : (
+          {!teacher.fetchTeachersStats && (
             <StatsView
               onPress={this._onPress}
               stats={teacher.stats}
@@ -137,14 +143,14 @@ export class TeacherScreen extends React.Component {
               style={{ marginHorizontal: Layout.container.margin }}
             />
           )}
-          <View
+          {/* <View
             style={{
               marginHorizontal: Layout.container.margin,
               marginVertical: Layout.container.margin * 2,
             }}
           >
             <Button onPress={this._onPressComments} light large title="See all comments" />
-          </View>
+          </View> */}
         </ScrollView>
         {selectedStat && (
           <StatModal

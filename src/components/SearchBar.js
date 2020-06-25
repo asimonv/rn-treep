@@ -1,11 +1,11 @@
-import React from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
-import { colors } from '../styles/common.style';
+import React from "react";
+import { StyleSheet, TextInput, View } from "react-native";
+import { colors } from "../styles/common.style";
 
 export default class SearchBar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { text: 'Search...', style: styles.container };
+    this.state = { text: "Search...", style: styles.container };
 
     this._onFocus = this._onFocus.bind(this);
     this._onBlur = this._onBlur.bind(this);
@@ -27,6 +27,7 @@ export default class SearchBar extends React.Component {
             style={styles.searchBar}
             onChangeText={text => this.props.onChangeText(text)}
             clearButtonMode="always"
+            placeholderTextColor="gray"
             placeholder={this.state.text}
             onFocus={() => this._onFocus()}
             onBlur={() => this._onBlur()}
@@ -39,32 +40,33 @@ export default class SearchBar extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    height: 40,
-    justifyContent: 'center',
-    borderColor: 'lightgray',
-    borderWidth: 1,
-    borderRadius: 5,
+    justifyContent: "center",
+    borderColor: "lightgray",
+    borderWidth: 2,
+    padding: 10,
+    borderRadius: 30,
+    backgroundColor: colors.lightgray,
   },
   icon: {
     fontSize: 18,
   },
   content: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     height: 30,
     marginLeft: 5,
-    backgroundColor: 'white',
   },
   searchBar: {
     flex: 1,
     marginLeft: 5,
     fontSize: 18,
+    backgroundColor: "transparent",
   },
   focused: {
-    height: 40,
-    justifyContent: 'center',
+    padding: 10,
+    justifyContent: "center",
     borderColor: colors.tintColor,
-    borderWidth: 1,
-    borderRadius: 5,
+    borderWidth: 2,
+    borderRadius: 30,
   },
 });

@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import React from "react";
+import { StyleSheet, Text } from "react-native";
 
 export default function HeaderView(props) {
   return <Text style={styles.header}>{props.title}</Text>;
@@ -7,11 +7,10 @@ export default function HeaderView(props) {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: '#F9F9F9',
-    fontWeight: 'bold',
+    backgroundColor: "#F9F9F9",
+    fontWeight: "bold",
     fontSize: 15,
-    color: 'black',
-    paddingTop: 4,
-    paddingBottom: 4,
+    color: "black",
+    padding: 10,
   },
 });

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "react-native start",
-    "ios": "react-native run-ios --simulator='iPhone 11'",
+    "ios": "react-native run-ios --simulator='iPhone 11 Pro'",
     "test": "jest",
     "lint": "eslint ."
   },
@@ -27,6 +27,7 @@
     "react-native-radio-buttons-group": "^1.0.7",
     "react-native-read-more-text": "^1.1.0",
     "react-native-reanimated": "^1.4.0",
+    "react-native-shared-element": "^0.7.0",
     "react-native-vector-icons": "^6.6.0",
     "react-navigation": "^4.0.0",
     "react-navigation-fluid-transitions": "^0.3.2",
