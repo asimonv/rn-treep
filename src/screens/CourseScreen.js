@@ -1,19 +1,26 @@
-import React from 'react';
-import { RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { connect } from 'react-redux';
+import React from "react";
+import {
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import { connect } from "react-redux";
+import { withInAppNotification } from "react-native-in-app-notification";
 
-import StatModal from '../components/StatModal';
-import StatsView from '../components/StatsView';
-import HeaderCard from '../components/HeaderCard';
-import Layout from '../styles/Layout';
-import { votesOptions } from '../data/courseOptions';
-import { fetchCourseStats, courseSendStat } from '../actions/courseActions';
-import { sendStat } from '../actions/userActions';
-import checkIfVoted from '../helpers/votes';
+import StatModal from "../components/StatModal";
+import StatsView from "../components/StatsView";
+import HeaderCard from "../components/HeaderCard";
+import Layout from "../styles/Layout";
+import { votesOptions } from "../data/courseOptions";
+import { fetchCourseStats, courseSendStat } from "../actions/courseActions";
+import { sendStat } from "../actions/userActions";
+import checkIfVoted from "../helpers/votes";
 
 export class CourseScreen extends React.Component {
   static navigationOptions = {
-    title: 'Course',
+    title: "Course",
   };
 
   constructor(props) {
@@ -77,19 +84,17 @@ export class CourseScreen extends React.Component {
     dispatch(sendStat(data));
     dispatch(courseSendStat(data));
     this.refs.modal.closeModal();
-    /* showNotification({
-        title: "Thank you!",
-        message: "Your opinion is very important to others",
-        onPress: () => Alert.alert("Alert", "You clicked the notification!")
-      });
-      */
+    showNotification({
+      title: "Thank you!",
+      message: "Your opinion is very important to others",
+    });
   }
 
   _onPressComments() {
     const {
       navigation: { navigate },
     } = this.props;
-    navigate('Comments', { commentEntity: 'course' });
+    navigate("Comments", { commentEntity: "course" });
   }
 
   render() {
@@ -101,19 +106,25 @@ export class CourseScreen extends React.Component {
         <ScrollView
           style={styles.container}
           refreshControl={
-            <RefreshControl refreshing={course.fetchingStats} onRefresh={this._onRefresh} />
+            <RefreshControl
+              refreshing={course.fetchingStats}
+              onRefresh={this._onRefresh}
+            />
           }
         >
           <HeaderCard
             title={selectedCourse.name}
             description={selectedCourse.description}
+            showTitle
             containerStyle={{
               marginHorizontal: Layout.container.margin,
               marginVertical: Layout.container.margin * 2,
             }}
           />
           {fetchingStats ? (
-            <Text style={{ marginHorizontal: Layout.container.margin }}>Loading...</Text>
+            <Text style={{ marginHorizontal: Layout.container.margin }}>
+              Loading...
+            </Text>
           ) : (
             <StatsView
               onPress={this._onPress}
@@ -145,7 +156,7 @@ const mapStateToProps = state => ({
   votes: state.user.votes,
 });
 
-export default connect(mapStateToProps)(CourseScreen);
+export default withInAppNotification(connect(mapStateToProps)(CourseScreen));
 
 const styles = StyleSheet.create({
   container: {

@@ -78,7 +78,12 @@ const StatCard = ({ onPress, item }) => {
                 {subtitle}
               </Text>
             </View>
-            {image && <AsyncImage style={{ flex: 1 }} url={image} />}
+            {image && (
+              <AsyncImage
+                style={{ flex: 1, backgroundColor: "white" }}
+                url={image}
+              />
+            )}
           </View>
         </View>
       </Wrapper>

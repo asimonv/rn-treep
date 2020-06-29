@@ -88,6 +88,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     paddingVertical: 2.5,
     backgroundColor: "rgba(52, 52, 52, 0.2)",
-    borderRadius: 10,
+    borderRadius: 5,
   },
 });

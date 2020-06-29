@@ -10,7 +10,6 @@ import { SafeAreaView } from "react-navigation";
 import { connect } from "react-redux";
 import { getUserVotes } from "../actions/userActions";
 import statsService from "../services/stats";
-import Layout from "../styles/Layout";
 
 import Message from "../components/Message";
 import BigStatCard from "../components/BigStatCard";
@@ -59,8 +58,8 @@ class HomeScreen extends React.Component {
   }
 
   _renderItem({ item }) {
-    const { title, subtitle, image, statType } = item;
-    return statType == 0 ? (
+    const { title, statType } = item;
+    return statType === 0 ? (
       <BigStatCard item={item} onPress={this._onPressStat} />
     ) : (
       <Message title={title} style={{ margin: 20 }} />

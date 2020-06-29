@@ -61,6 +61,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     fontSize: 18,
     backgroundColor: "transparent",
+    color: "black",
   },
   focused: {
     padding: 10,

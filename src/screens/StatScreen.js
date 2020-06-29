@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import {
   FlatList,
-  TouchableWithoutFeedback,
-  StatusBar,
   StyleSheet,
   View,
   Text,
@@ -15,8 +13,8 @@ import { SafeAreaView } from "react-navigation";
 import { BlurView } from "@react-native-community/blur";
 import statsService from "../services/stats";
 import { colors } from "../styles/common.style";
-import Layout from "../styles/Layout";
 import { teacherSet } from "../actions/teacherActions";
+import { courseSet } from "../actions/courseActions";
 
 import StatView from "../components/StatView";
 
@@ -62,8 +60,22 @@ class StatScreen extends Component {
   );
 
   _onPress(item) {
-    this.props.dispatch(teacherSet(item));
-    this.props.navigation.navigate("Teacher");
+    const {
+      navigation: { navigate, getParam },
+      dispatch,
+    } = this.props;
+    const { id } = getParam("stat");
+
+    switch (id) {
+      case "top-teachers":
+        dispatch(teacherSet(item));
+        navigate("Teacher");
+        break;
+      default:
+        dispatch(courseSet(item));
+        navigate("Course");
+        break;
+    }
   }
 
   render() {
@@ -158,7 +170,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "gray",
     paddingHorizontal: 20,
-    marginBottom: 20,
   },
 });
 

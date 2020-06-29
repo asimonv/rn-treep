@@ -14,7 +14,6 @@ import { withInAppNotification } from "react-native-in-app-notification";
 import HeaderCard from "../components/HeaderCard";
 import StatModal from "../components/StatModal";
 import StatsView from "../components/StatsView";
-import Button from "../components/Button";
 import Layout from "../styles/Layout";
 
 import { fetchTeachersStats, teacherSendStat } from "../actions/teacherActions";
@@ -77,7 +76,6 @@ export class TeacherScreen extends React.Component {
   _onRefresh() {
     const {
       teacher: { selectedTeacher },
-      showNotification,
       dispatch,
     } = this.props;
     const { id } = selectedTeacher;
