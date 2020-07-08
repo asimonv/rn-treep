@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, TextInput, View } from "react-native";
+import { StyleSheet, TextInput, View, Platform } from "react-native";
 import { colors } from "../styles/common.style";
 
 export default class SearchBar extends React.Component {
@@ -24,7 +24,10 @@ export default class SearchBar extends React.Component {
       <View style={[this.props.style, this.state.style]}>
         <View style={styles.content}>
           <TextInput
-            style={styles.searchBar}
+            style={[
+              styles.searchBar,
+              Platform.OS === "android" ? { margin: 0, padding: 0 } : {},
+            ]}
             onChangeText={text => this.props.onChangeText(text)}
             clearButtonMode="always"
             placeholderTextColor="gray"
