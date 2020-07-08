@@ -1,7 +1,6 @@
 import React from "react";
-import { Text, View, TouchableWithoutFeedback } from "react-native";
+import { Text, View, TouchableWithoutFeedback, Platform } from "react-native";
 import { BlurView } from "@react-native-community/blur";
-import FastImage from "react-native-fast-image";
 import styled from "styled-components/native";
 
 import AsyncImage from "./AsyncImage";
@@ -9,6 +8,23 @@ import { colors } from "../styles/common.style";
 
 const Wrapper = styled.View`
   box-shadow: 0px 1px 3px rgba(127, 140, 141, 0.1);
+`;
+
+const StyledBlurView = styled(BlurView)`
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+`;
+
+const StyledView = styled.View`
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background-color: rgba(255, 255, 255, 0.95);
 `;
 
 const StatCard = ({ onPress, item }) => {
@@ -43,17 +59,12 @@ const StatCard = ({ onPress, item }) => {
                 borderTopRightRadius: 30,
               }}
             >
-              <BlurView
-                blurType="light"
-                blurAmount={10}
-                style={{
-                  position: "absolute",
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  top: 0,
-                }}
-              />
+              {Platform.OS === "ios" ? (
+                <StyledBlurView blurType="light" blurAmount={10} />
+              ) : (
+                <StyledView />
+              )}
+
               <Text
                 style={{
                   paddingHorizontal: 20,
